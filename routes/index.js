@@ -15,7 +15,7 @@ router.get('/', function(req, res, next) {
   if (req.query){
     // do search results here 
     // not sure if we should write query here or make connection here. 
-    connection.query('select * from flight where airline_name = ' + req.airline_name + ' or departure_airport = ' + req.departure_airport + ' or arrival_airport = ' + req.arrival_airport + ' or departure_time =  ' + req.departure_time , function (error, results, fields) {
+    connection.query('select * from flight where airline_name = ' + req.query.airline_name + ' or departure_airport = ' + req.query.departure_airport + ' or arrival_airport = ' + req.query.arrival_airport + ' or departure_time =  ' + req.query.departure_time , function (error, results, fields) {
       if (error) {throw error;}
       // connected!
       console.log(results);
