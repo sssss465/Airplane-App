@@ -4,6 +4,7 @@
 /dist
 /tmp
 /out-tsc
+*.swp
 
 # Runtime data
 pids
