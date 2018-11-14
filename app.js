@@ -6,7 +6,9 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
 const index = require('./routes/index');
-const users = require('./routes/users');
+const customer = require('./routes/customer');
+const agent = require('./routes/agent');
+const staff = require('./routes/staff');
 
 const app = express();
 // require('./db.js'); // db connection and schema file
@@ -24,7 +26,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/users', users);
+app.use('/customer', customer);
+app.use('/agent', agent);
+app.use('/staff', staff);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
