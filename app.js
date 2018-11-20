@@ -11,7 +11,15 @@ const agent = require('./routes/agent');
 const staff = require('./routes/staff');
 
 const app = express();
-// require('./db.js'); // db connection and schema file
+const mysql = require('mysql');
+const pool = mysql.createPool({
+  host     : 'localhost',
+  user     : 'root',
+  password : '',
+  database: 'airplaneapp' // airport
+});
+app.set('pool', pool); // mysql pooled connection, populates in app.req.pool or app.res.pool
+require('./db.js'); // db connection and schema file
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
