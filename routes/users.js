@@ -4,11 +4,11 @@ const passport = require('passport');
 const bcrypt = require('bcrypt');
 
 /* GET users listing. */
-router.get('/', function (req, res, next) {
+router.get('/', (req, res, next) => {
   res.send('respond with a resource');
 });
 
-router.get('/login', function (req, res, next) {
+router.get('/login', (req, res, next) => {
   res.send('login things here');
 });
 
@@ -19,7 +19,7 @@ router.post('/login',
     }
   ));
 
-router.get('/logout', function (req, res) {
+router.get('/logout', (req, res) => {
   req.logout();
   res.redirect('/');
 });
@@ -32,12 +32,12 @@ router.get('/profile', (req, res) => {
   }
 });
 
-router.get('/register', function (req, res, next) {
+router.get('/register', (req, res, next) => {
   // user registration form
   res.render('index', {title: 'Express'});
 });
 
-router.post('/register', function (req, res, next) {
+router.post('/register', (req, res, next) => {
   // user registration form
   res.redirect('/');
 });
