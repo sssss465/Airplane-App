@@ -1,6 +1,4 @@
 <div class="row">
-<p>Welcome to Airplane-app, the best trip planning site!</p>
-<p>Search below for upcoming flights</p>
 {{#if results}}
     <table class="highlight col s12">
     <thead>
@@ -33,10 +31,12 @@
     </tbody>
     </table>
 {{else}}
+<p>Welcome to Airplane-app, the best trip planning site!</p>
+<p>Search below for upcoming flights</p>
 {{#if error}}
    <div class="card-panel pink lighten-3">No flights were found with those queries, please try a new search result.</div>
 {{/if}}
-    <form action="/" method="get" class="col s12">
+    <form action="/" method="get" class="col s12 center-align">
         <div class="input-field col s6">
             <label for="source_airport">Enter your Source airport: </label>
             <input type="text" name="source_airport" id="source_airport" required>

@@ -1,9 +1,12 @@
 body {
   background: #EEF2FF top center repeat-x;
-  text-align: center;
+  /* text-align: center; */
   margin: auto;
   font-family: 'Roboto', sans-serif;
   font-size: 18px;
+}
+p {
+  text-align: center;
 }
 .form-control {
   width: 50%;
