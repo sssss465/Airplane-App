@@ -1,44 +1,40 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcrypt'); // hashing
-const passport = require('passport');
-const mysql = require('mysql');
-const connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : '',
-  database: 'airport'
-});
+
 /* GET home page. */
+// https://stackoverflow.com/a/20719659 in order to pass the variable from app.js to the router
+
 router.get('/', function(req, res, next) {
   // we do search results via query string
-  if (req.query){
-    // do search results here 
-    // not sure if we should write query here or make connection here. 
-    connection.query('select * from flight where airline_name = ' + req.query.airline_name + ' or departure_airport = ' + req.query.departure_airport + ' or arrival_airport = ' + req.query.arrival_airport + ' or departure_time =  ' + req.query.departure_time , function (error, results, fields) {
+  // http://localhost:3000/?source_airport=JFK&dest_airport=PVG&date=2017-Aug-16
+  // working query
+  const connection = req.app.get('pool');
+  if (!(Object.keys(req.query).length === 0 && req.query.constructor === Object)){
+    // do search results here
+    // not sure if we should write query here or make connection here.
+    console.log(req.query);
+    const rq = req.query;
+    connection.query('select * from flight where departure_airport = ?' + ' or arrival_airport = ?' + ' and departure_time >=  ?',[rq.source_airport, rq.dest_airport, rq.date], function (error, results, fields) {
       if (error) {throw error;}
       // connected!
       console.log(results);
-      fields.forEach(function (field) {
-          console.log(field.name);
-      });
-      res.render('index', {results: results});
+      if (results.length === 0){
+        res.render('index', {error: true, results: results});
+      } else {
+        res.render('index', {results: results});
+      }
     });
   } else {
-    res.render('index', { title: 'Express' });
+    res.render('index');
   }
 });
 
-router.get('/register', function(req, res, next) {
-  // user registration form
-  res.render('index', { title: 'Express' });
+router.get("/register", (req, res, next) => {
+  res.render('register');
+});
+router.get("/login", (req, res, next) => {
+  res.render('login');
 });
 
-router.post('/register', function(req, res, next) {
-  // user registration form
-  // Look up the user and verify their password, if succesful redirect
-  // to the proper landing/splash page for the type of user they are 
-  res.redirect('/'); 
-});
 
 module.exports = router;

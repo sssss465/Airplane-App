@@ -1,0 +1,75 @@
+<div class="row section">
+<form action="/register" method="post" class= "col s12 center-align">
+    <div class="input-field col s12">
+    <select>
+      <option value="customer">Customer</option>
+      <option value="agent">Agent</option>
+      <option value="staff">Staff</option>
+    </select>
+    <label>Register As</label>
+  </div>
+  <div class="input-field col s12">
+    <label for="name">Enter your name: </label>
+    <input type="text" name="name" id="name" required>
+  </div>
+    <div class="input-field col s6">
+        <input name="email" type="email" class="validate" required>
+        <label for="email">Email</label>
+    </div>
+    <div class="input-field col s6">
+        <input name="password" type="password" class="validate" required>
+        <label for="password">Password</label>
+    </div>
+    <div class="input-field col s3">
+        <input name="bldn" type="text" class="validate" required>
+        <label for="bldn">Building number</label>
+    </div>
+      <div class="input-field col s3">
+        <input name="Street" type="text" class="validate" required>
+        <label for="Street">Street</label>
+    </div>
+      <div class="input-field col s3">
+        <input name="City" type="text" class="validate" required>
+        <label for="City">City</label>
+    </div>
+      <div class="input-field col s3">
+        <input name="State" type="text" class="validate" required>
+        <label for="State" name="state">State</label>
+    </div>
+      <div class="input-field col s6">
+        <i class="material-icons prefix">phone</i>
+        <input name="Phone" type="tel" class="validate" required>
+        <label for="Phone">Phone Number</label>
+    </div>
+       <div class="input-field col s6">
+        <input name="passportnumber" type="text" class="validate" required>
+        <label for="passportnumber">Passport Number</label>
+    </div>
+    <div class="input-field col s6">
+            <label for="exp">Passport expiration</label>
+            <input type="text" id="exp" name="exp" class="datepicker">
+    </div>
+    <div class="input-field col s6">
+        <input name="passportcountry" type="text" class="validate" required>
+        <label for="passportcountry">Passport country</label>
+    </div>
+    <div class="input-field col s12">
+            <label for="dob">Date of Birth</label>
+            <input type="text" id="dob" name="dob" class="datepicker">
+    </div>
+   <button class="btn waves-effect waves-light" type="submit">Submit
+        <i class="material-icons right">send</i>
+    </button>
+</form>
+</div>
+<script>
+      document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('select');
+    var instances = M.FormSelect.init(elems, {});
+  });
+   document.addEventListener('DOMContentLoaded', function () {
+        var elems = document.querySelectorAll('.datepicker');
+        var instances = M.Datepicker.init(elems, { format: "yyyy-mmm-dd" });
+    });
+</script>
+

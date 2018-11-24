@@ -1,8 +1,30 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background: #EEF2FF top center repeat-x;
+  /* text-align: center; */
+  margin: auto;
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
 }
-
+p {
+  text-align: center;
+}
+.form-control {
+  width: 50%;
+  display: inline-block;
+}
+.form-control-file{
+  width: 50%;
+  display: inline-block;
+}
 a {
   color: #00B7FF;
+}
+.delayed {
+color: #f44336;
+}
+.upcoming {
+ color: #9ccc65;
+}
+.in-progress {
+  color: #ff9800;
 }
