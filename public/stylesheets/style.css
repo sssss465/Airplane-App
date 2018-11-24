@@ -16,3 +16,12 @@ body {
 a {
   color: #00B7FF;
 }
+.delayed {
+color: #f44336;
+}
+.upcoming {
+ color: #9ccc65;
+}
+.in-progress {
+  color: #ff9800;
+}

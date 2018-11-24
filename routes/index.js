@@ -6,20 +6,26 @@ const router = express.Router();
 
 router.get('/', function(req, res, next) {
   // we do search results via query string
+  // http://localhost:3000/?source_airport=JFK&dest_airport=PVG&date=2017-Aug-16
+  // working query
   const connection = req.app.get('pool');
   if (!(Object.keys(req.query).length === 0 && req.query.constructor === Object)){
     // do search results here
     // not sure if we should write query here or make connection here.
     console.log(req.query);
     const rq = req.query;
-    connection.query('select * from flight where airline_name = ?' + ' or departure_airport = ?' + ' or arrival_airport = ?' + ' or departure_time =  ?',[rq.airline_name, rq.departure_airport, rq.arrival_airport, rq.departure_time], function (error, results, fields) {
+    connection.query('select * from flight where departure_airport = ?' + ' or arrival_airport = ?' + ' and departure_time >=  ?',[rq.source_airport, rq.dest_airport, rq.date], function (error, results, fields) {
       if (error) {throw error;}
       // connected!
       console.log(results);
-      res.render('index', {title: 'Express', results: results});
+      if (results.length === 0){
+        res.render('index', {error: true, results: results});
+      } else {
+        res.render('index', {results: results});
+      }
     });
   } else {
-    res.render('index', { title: 'Express' });
+    res.render('index');
   }
 });
 
