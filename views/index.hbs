@@ -3,4 +3,30 @@
 <p>Search below for upcoming flights</p>
 {{#if results}}
 <p> hello {{results}}</p>
+{{else}}
+<div class="row">
+<form action="/" method="get" class="col s12">
+  <div class="input-field col s6">
+    <label for="source_airport">Enter your Source airport: </label>
+    <input type="text" name="source_airport" id="source_airport" required>
+  </div>
+  <div class="input-field col s6">
+    <label for="dest_airport">Enter your Destination airport: </label>
+    <input type="text" name="dest_airport" id="dest_airport" required>
+  </div>
+  <div class="input-field col s12">
+      <input type="text" class="datepicker">
+  </div>
+  <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+    <i class="material-icons right">send</i>
+  </button>
+</form>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.datepicker');
+    var instances = M.Datepicker.init(elems, options);
+  });
+
+</script>
 {{/if}}

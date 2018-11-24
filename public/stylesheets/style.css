@@ -5,7 +5,14 @@ body {
   font-family: 'Roboto', sans-serif;
   font-size: 18px;
 }
-
+.form-control {
+  width: 50%;
+  display: inline-block;
+}
+.form-control-file{
+  width: 50%;
+  display: inline-block;
+}
 a {
   color: #00B7FF;
 }

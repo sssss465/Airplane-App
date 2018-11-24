@@ -30,8 +30,6 @@ passport.use(new LocalStrategy(
     });
   }
 ));
-
-
 // Configure Passport authenticated session persistence.
 passport.serializeUser(function (user, cb) {
   cb(null, user.id);
