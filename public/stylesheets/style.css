@@ -1,6 +1,9 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background: #EEF2FF top center repeat-x;
+  text-align: center;
+  margin: auto;
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
 }
 
 a {

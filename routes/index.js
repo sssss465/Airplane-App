@@ -16,7 +16,7 @@ router.get('/', function(req, res, next) {
       if (error) {throw error;}
       // connected!
       console.log(results);
-      res.render('index', {results: results});
+      res.render('index', {title: 'Express', results: results});
     });
   } else {
     res.render('index', { title: 'Express' });

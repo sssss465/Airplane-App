@@ -9,11 +9,18 @@ const mysql = require('mysql');
 // update user set authentication_string=password('toor') where user='root';      # mysql ver > 5.7
 // update user set password=password('toor') where user='root';                   # mysql ver < 5.7
 // $ mysqladmin -u root -p shutdown
+
+// const connection = mysql.createConnection({
+//   host: 'localhost',
+//   user: 'root',
+//   password: 'toor',
+//   database: 'ticket_sys'
+// });
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'toor',
-  database: 'ticket_sys'
+  password: '',
+  database: 'airplaneapp'
 });
 
 connection.connect(function (err) {
