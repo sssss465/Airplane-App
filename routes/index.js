@@ -14,7 +14,9 @@ router.get('/', function(req, res, next) {
     // not sure if we should write query here or make connection here.
     console.log(req.query);
     const rq = req.query;
-    connection.query('select * from flight where departure_airport = ?' + ' or arrival_airport = ?' + ' and departure_time >=  ?',[rq.source_airport, rq.dest_airport, rq.date], function (error, results, fields) {
+    const date = rq.date === '' ? '1970-01-01' : rq.date;
+    const arrival = rq.arrival === '' ? '2030-01-01' : rq.arrival;
+    connection.query('select * from flight where departure_airport = ?' + ' and arrival_airport = ?' + ' and (departure_time >=  ? and arrival_time <= ?)',[rq.source_airport, rq.dest_airport, date, arrival], function (error, results, fields) {
       if (error) {throw error;}
       // connected!
       console.log(results);
@@ -28,12 +30,22 @@ router.get('/', function(req, res, next) {
     res.render('index');
   }
 });
-
 router.get("/register", (req, res, next) => {
   res.render('register');
 });
 router.get("/login", (req, res, next) => {
   res.render('login');
+});
+router.post("/register", (req, res, next) => {
+  // make db call to check no conflicting users
+  // then redirect to user page
+  console.log(req.body);
+  res.redirect('/register');
+});
+router.post("/login", (req, res, next) => {
+  //redirect to user page if success otherwise stay on login with error
+  console.log(req.body);
+  res.redirect('/login');
 });
 
 

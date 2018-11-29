@@ -1,7 +1,7 @@
 <div class="row section">
 <form action="/login" method="post" class= "col s12 center-align">
     <div class="input-field col s12">
-    <select>
+    <select name="logintype">
       <option value="customer">Customer</option>
       <option value="agent">Agent</option>
       <option value="staff">Staff</option>
@@ -9,11 +9,11 @@
     <label>Login As</label>
   </div>
     <div class="input-field col s6">
-        <input name="email" type="email" class="validate" required>
+        <input id="email" name="email" type="email" class="validate" required>
         <label for="email">Email</label>
     </div>
     <div class="input-field col s6">
-        <input name="password" type="password" class="validate" required>
+        <input id="password" name="password" type="password" class="validate" required>
         <label for="password">Password</label>
     </div>
    <button class="btn waves-effect waves-light" type="submit">Submit

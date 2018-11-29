@@ -51,6 +51,7 @@ exports.findById = function (id, cb) {
   });
 };
 
+//function(err, user)  = cb;
 exports.findByUsername = function (username, cb) {
   process.nextTick(function () {
     connection.query('select username, password from staff union select email, password from agent', function (err, results, fields) {
