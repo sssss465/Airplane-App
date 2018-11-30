@@ -16,8 +16,15 @@
     <div class="nav-wrapper">
       <a href="/" class="brand-logo">Airplane App</a>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
+        {{#if user}}
+        <li><a href="/register">Signed in as {{user.id}}</a></li>
+         <li><a href="/logout">Logout</a></li>
+        {{else}}
         <li><a href="/register">Sign up</a></li>
          <li><a href="/login">Sign in</a></li>
+        {{/if}}
+        
+
       </ul>
     </div>
   </nav>

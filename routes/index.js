@@ -21,13 +21,13 @@ router.get('/', function(req, res, next) {
       // connected!
       console.log(results);
       if (results.length === 0){
-        res.render('index', {error: true, results: results});
+        res.render('index', {user: req.user, error: true, results: results});
       } else {
-        res.render('index', {results: results});
+        res.render('index', {user: req.user, results: results});
       }
     });
   } else {
-    res.render('index');
+    res.render('index', {user: req.user});
   }
 });
 router.get("/register", (req, res, next) => {
@@ -36,11 +36,15 @@ router.get("/register", (req, res, next) => {
 router.get("/login", (req, res, next) => {
   res.render('login');
 });
+router.get('/logout', function(req, res) {
+  req.logout();
+  res.redirect('/');
+});
 router.post("/register", passport.authenticate('local-register'),(req, res, next) => {
   // make db call to check no conflicting users
   // then redirect to user page
-  console.log(req.body);
-  res.redirect('/register');
+  console.log("WELCOME TO THE SITE !");
+  res.redirect('/');
 });
 router.post("/login", passport.authenticate('local-login'), (req, res, next) => {
   //redirect to user page if success otherwise stay on login with error

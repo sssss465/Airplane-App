@@ -17,6 +17,7 @@ const staff = require('./routes/staff');
 
 const app = express();
 const mysql = require('mysql');
+const md5 = require('./md5');
 const pool = mysql.createPool({
   host: 'localhost',
   user: 'root',
@@ -52,6 +53,7 @@ passport.serializeUser(function (user, done) {
 });
 // https://github.com/manjeshpv/node-express-passport-mysql/blob/master/config/passport.js
 passport.deserializeUser(function (user, done) {
+  console.log("deserializing", user);
   switch(user.type){
     case 'customer': 
     connection.query("SELECT * FROM customer WHERE email = ? ", [user.id], function (err, rows) {
@@ -92,29 +94,58 @@ passport.use(
       // we are checking to see if the user trying to login already exists
       console.log('signing up', username, password);
       console.log(req.body.logintype);
-      connection.query("select username, password from airline_staff union select email, password from booking_agent union select email, password from customer WHERE username = ?", [username], function (err, rows) {
+      console.log(req.body);
+      connection.query("(select username, password from airline_staff where username=?) union (select email, password from booking_agent where email=?) union (select email, password from customer where email=?)", [username, username, username], function (err, rows) {
         if (err)
           return done(err);
         if (rows.length) {
           return done(null, false, {'signupMessage': 'That username is already taken.'});
         } else {
           const newUserMysql = {
-            username: username,
-            password: bcrypt.hashSync(password, 3) // use the generateHash function in our user model
+            id: username,
+            type: req.body.logintype,
+            // password: bcrypt.hashSync(password, 3) // use the generateHash function in our user model
+            password: md5(password)
           };
+          const user = {}; // for insert
+          if (req.body.logintype === "airline_staff"){
+            user.username = req.body.email;
+            user.password = newUserMysql.password;
+            user.first_name = name;
+            user.last_name = name; // lol
+            user.date_of_birth = req.body.dob;
+            user.airline_name = "United";
+          } else if (req.body.logintype === "booking_agent"){
+            user.email = req.body.email;
+            user.password = newUserMysql.password;
+            user.booking_agent_id = Math.random().toString(36).substr(2, 5);
+          } else {
+            user.email = req.body.email;
+            user.name = newUserMysql.password;
+            user.building_number = req.body.bldn;
+            user.street = req.body.street;
+            user.city = req.body.city;
+            user.state = req.body.state;
+            user.phone = req.body.phone;
+            user.state = req.body.state;
+            user.passportnumber = req.body.passportnumber;
+            user.exp = req.body.exp;
+            user.passportcountry = req.body.passportcountry;
+            user.date_of_birth = req.body.dob;
+          }
+          console.log(user);
           let insertQuery = "INSERT INTO " + req.body.logintype;
-          const values = Object.values(req.body).filter(v => v !== '');// no empty fields
-          insertQuery += "values (";
+          const values = Object.values(user).filter(v => v !== '');// no empty fields
+          insertQuery += " values (";
           for (let i = 0; i < values.length; i++){
-            if (i === values.length-1) {insertQuery += "?)";}
+            if (i === values.length-1) {insertQuery += "?)"; break;}
             insertQuery += "?, ";
           }
-
+          console.log(insertQuery, values);
           connection.query(insertQuery, values, function (err, rows) {
-            newUserMysql.id = rows.insertId;
-            newUserMysql.type = req.body.logintype;
-            console.log("succesfully added", newUserMysql);
-            return done(null, newUserMysql);
+            if (err) throw err;
+            console.log("succesfully added", user);
+            return done(null, newUserMysql); // for application
           });
         }
       });
@@ -144,7 +175,7 @@ passport.use(
           return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
         }
         // if the user is found but the password is wrong
-        if (!bcrypt.compareSync(password, rows[0].password))
+        if (password === md5(password))
           return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
 
         // all is well, return successful user
