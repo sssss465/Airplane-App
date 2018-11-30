@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
+const passport = require('passport');
 /* GET home page. */
 // https://stackoverflow.com/a/20719659 in order to pass the variable from app.js to the router
 
@@ -36,13 +36,13 @@ router.get("/register", (req, res, next) => {
 router.get("/login", (req, res, next) => {
   res.render('login');
 });
-router.post("/register", (req, res, next) => {
+router.post("/register", passport.authenticate('local-register'),(req, res, next) => {
   // make db call to check no conflicting users
   // then redirect to user page
   console.log(req.body);
   res.redirect('/register');
 });
-router.post("/login", (req, res, next) => {
+router.post("/login", passport.authenticate('local-login'), (req, res, next) => {
   //redirect to user page if success otherwise stay on login with error
   console.log(req.body);
   res.redirect('/login');
