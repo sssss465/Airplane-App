@@ -1,4 +1,7 @@
 <div class="row section">
+    {{#if message}}
+   <div class="card-panel pink lighten-3">{{message}}</div>
+{{/if}}
 <form action="/login" method="post" class= "col s12 center-align">
     <div class="input-field col s12">
     <select name="logintype">
@@ -28,7 +31,7 @@
   });
    document.addEventListener('DOMContentLoaded', function () {
         var elems = document.querySelectorAll('.datepicker');
-        var instances = M.Datepicker.init(elems, { format: "yyyy-mmm-dd" });
+        var instances = M.Datepicker.init(elems, { format: "yyyy-mm-dd" });
     });
 </script>
 

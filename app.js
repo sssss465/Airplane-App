@@ -25,29 +25,6 @@ const pool = mysql.createPool({
   database: 'airplaneapp' // airport
 });
 const connection = pool;
-// Configure the local strategy for use by Passport.
-// passport.use(new LocalStrategy({
-//     // by default, local strategy uses username and password, we will override with email
-//     usernameField: 'email',
-//     passwordField: 'password',
-//     passReqToCallback: true // allows us to pass back the entire request to the callback
-//   },
-//   function (req, username, password, done) {
-//     db.findByUsername(username, function (err, user) {
-//       if (err) {
-//         return done(err);
-//       }
-//       if (!user) {
-//         return done(null, false);
-//       }
-//       if (!user.verifyPassword(password)) {
-//         return done(null, false);
-//       }
-//       return done(null, user);
-//     });
-//   }
-// ));
-// Configure Passport authenticated session persistence.
 passport.serializeUser(function (user, done) {
   done(null, {'id' : user.id, 'type': user.type});
 });
@@ -57,16 +34,19 @@ passport.deserializeUser(function (user, done) {
   switch(user.type){
     case 'customer': 
     connection.query("SELECT * FROM customer WHERE email = ? ", [user.id], function (err, rows) {
+      rows[0].type = user.type;
       return done(err, rows[0]);
     });
       break;
     case 'booking_agent':
     connection.query("SELECT * FROM booking_agent WHERE email = ? ", [user.id], function (err, rows) {
+      rows[0].type = user.type;
       return done(err, rows[0]);
     });
       break;
     case 'airline_staff':
-    connection.query("SELECT * FROM staff WHERE username = ? ", [user.id], function (err, rows) {
+    connection.query("SELECT * FROM airline_staff WHERE username = ? ", [user.id], function (err, rows) {
+      rows[0].type = user.type;
       return done(err, rows[0]);
     });
       break;
@@ -111,8 +91,8 @@ passport.use(
           if (req.body.logintype === "airline_staff"){
             user.username = req.body.email;
             user.password = newUserMysql.password;
-            user.first_name = name;
-            user.last_name = name; // lol
+            user.first_name = username;
+            user.last_name = username; // lol
             user.date_of_birth = req.body.dob;
             user.airline_name = "United";
           } else if (req.body.logintype === "booking_agent"){
@@ -121,7 +101,8 @@ passport.use(
             user.booking_agent_id = Math.random().toString(36).substr(2, 5);
           } else {
             user.email = req.body.email;
-            user.name = newUserMysql.password;
+            user.name = req.body.password;
+            user.password = newUserMysql.password;
             user.building_number = req.body.bldn;
             user.street = req.body.street;
             user.city = req.body.city;
@@ -168,18 +149,18 @@ passport.use(
     },
     function (req, username, password, done) { // callback with email and password from our form
       console.log('login strat hit');
-      connection.query("SELECT * FROM users WHERE username = ?", [username], function (err, rows) {
+      connection.query("(select username, password from airline_staff where username=?) union (select email, password from booking_agent where email=?) union (select email, password from customer where email=?)", [username, username, username], function (err, rows) {
         if (err)
-          return done(err);
+          {return done(err);}
         if (!rows.length) {
-          return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
+          return done(null, false, {'loginMessage': 'No user found.'}); // req.flash is the way to set flashdata using connect-flash
         }
         // if the user is found but the password is wrong
-        if (password === md5(password))
-          return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
-
+        if (rows[0].password !== md5(password))
+          {return done(null, false, {'loginMessage': 'Oops! Wrong password.'});} // create the loginMessage and save it to session as flashdata
+        console.log("succesful login!!! :D");
         // all is well, return successful user
-        return done(null, rows[0]);
+        return done(null, {id: username, type: req.body.logintype});
       });
     })
 );
@@ -209,10 +190,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/', index);
-app.use('/users', users);
-app.use('/agent', agent);
+app.use('/booking_agent', agent);
 app.use('/customer', customer);
-app.use('/staff', staff);
+app.use('/airline_staff', staff);
 
 app.use('/test', function (req, res, next) {
   res.send(db.findByUsername('jana'));

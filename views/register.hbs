@@ -1,4 +1,7 @@
 <div class="row section">
+    {{#if message}}
+   <div class="card-panel pink lighten-3">{{message}}</div>
+{{/if}}
 <form action="/register" method="post" class= "col s12 center-align">
     <div class="input-field col s12">
     <select name="logintype" id="logintype">
@@ -69,13 +72,16 @@
   });
    document.addEventListener('DOMContentLoaded', function () {
         var elems = document.querySelectorAll('.datepicker');
-        var instances = M.Datepicker.init(elems, { format: "yyyy-mmm-dd" });
+        var instances = M.Datepicker.init(elems, { format: "yyyy-mm-dd" });
         $("#logintype").change(function(){
             var val = $("#logintype").val();
             var all = [".bldn", ".Street", ".City", ".State", ".Phone", ".passportnumber", ".exp", ".passportcountry", ".dob"];
             if (val === "airline_staff" || val === "booking_agent"){
                for (var att in all){
                    $(all[att]).removeAttr('required');
+                   if (val === "airline_staff" && all[att] === ".dob") {
+                       $(all[att]).show();
+                       continue;}
                    $(all[att]).hide();
                }
                 $('form').attr('novalidate', 'novalidate');

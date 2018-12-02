@@ -27,6 +27,7 @@ router.get('/', function(req, res, next) {
       }
     });
   } else {
+    console.log('logged in user', req.user);
     res.render('index', {user: req.user});
   }
 });
@@ -40,16 +41,33 @@ router.get('/logout', function(req, res) {
   req.logout();
   res.redirect('/');
 });
-router.post("/register", passport.authenticate('local-register'),(req, res, next) => {
+router.post("/register",(req, res, next) => {
   // make db call to check no conflicting users
   // then redirect to user page
-  console.log("WELCOME TO THE SITE !");
-  res.redirect('/');
+  passport.authenticate('local-register', function(err, user, info){
+    if (err) { return next(err); }
+    if (info) {console.log(info);}
+    if (!user) { return res.render('register', {message: info.signupMessage});}
+    console.log("WELCOME TO THE SITE !");
+    req.login(user, (err) => {
+      if(err) throw err;
+      res.redirect('/');
+    });
+    
+  })(req, res, next);
 });
 router.post("/login", passport.authenticate('local-login'), (req, res, next) => {
   //redirect to user page if success otherwise stay on login with error
-  console.log(req.body);
-  res.redirect('/login');
+  passport.authenticate('local-login', function(err, user, info){
+    if (err) { return next(err); }
+    if (info) {console.log(info);}
+    if (!user) { return res.render('login', {message: info.loginMessage});}
+    console.log("WELCOME TO THE SITE ! (login)");
+    req.login(user, (err) => {
+      if(err) throw err;
+      res.redirect('/');
+    });
+  })(req, res, next);
 });
 
 
