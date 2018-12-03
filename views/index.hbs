@@ -1,5 +1,68 @@
-<h1>{{title}}</h1>
-<p>Welcome to {{title}}</p>
-{{#if result}}
-<p> hello {{result.foo}}</p>
-{{#endif}}
+<div class="row">
+{{#if results}}
+    <table class="highlight col s12">
+    <thead>
+        <tr>
+            <th>Airline Name</th>
+            <th>Flight Number</th>
+            <th>Departure Airport</th>
+            <th>Departure Time</th>
+            <th>Arrival Airport</th>
+            <th>Arrival Time</th>
+            <th>Price</th>
+            <th>Status</th>
+            <th>Airplane ID</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each results}}
+        <tr>
+            <td>{{this.airline_name}}</td>
+            <td>{{this.flight_num}}</td>
+            <td>{{this.departure_airport}}</td>
+            <td>{{this.departure_time}}</td>
+            <td>{{this.arrival_airport}}</td>
+            <td>{{this.arrival_time}}</td>
+            <td>{{this.price}}</td>
+            <td class ="{{this.status}}" >{{this.status}}</td>
+            <td>{{this.airplane_id}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+    </table>
+{{else}}
+<p>Welcome to Airplane-app, the best trip planning site!</p>
+<p>Search below for upcoming flights</p>
+{{#if error}}
+   <div class="card-panel pink lighten-3">No flights were found with those queries, please try a new search result.</div>
+{{/if}}
+    <form action="/" method="get" class="col s12 center-align">
+        <div class="input-field col s6">
+            <label for="source_airport">Enter your Source airport: </label>
+            <input type="text" name="source_airport" id="source_airport" required>
+        </div>
+        <div class="input-field col s6">
+            <label for="dest_airport">Enter your Destination airport: </label>
+            <input type="text" name="dest_airport" id="dest_airport" required>
+        </div>
+        <div class="input-field col s6">
+            <label for="date">Enter departure date</label>
+            <input type="text" id="date" name="date" class="datepicker">
+        </div>
+        <div class="input-field col s6">
+            <label for="date2">Enter arrival date</label>
+            <input type="text" id="date2" name="arrival" class="datepicker">
+        </div>
+        <button class="btn waves-effect waves-light" type="submit">Submit
+            <i class="material-icons right">send</i>
+        </button>
+    </form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var elems = document.querySelectorAll('.datepicker');
+        var instances = M.Datepicker.init(elems, { format: "yyyy-mm-dd" });
+    });
+</script>
+{{/if}}
+</div>

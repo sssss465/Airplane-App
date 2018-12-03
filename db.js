@@ -9,11 +9,18 @@ const mysql = require('mysql');
 // update user set authentication_string=password('toor') where user='root';      # mysql ver > 5.7
 // update user set password=password('toor') where user='root';                   # mysql ver < 5.7
 // $ mysqladmin -u root -p shutdown
+
+// const connection = mysql.createConnection({
+//   host: 'localhost',
+//   user: 'root',
+//   password: 'toor',
+//   database: 'ticket_sys'
+// });
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'toor',
-  database: 'ticket_sys'
+  password: '',
+  database: 'airplaneapp'
 });
 
 connection.connect(function (err) {
@@ -44,27 +51,19 @@ exports.findById = function (id, cb) {
   });
 };
 
+//function(err, user)  = cb;
 exports.findByUsername = function (username, cb) {
   process.nextTick(function () {
-    connection.query('select username, password from staff union select email, password from agent', function (err, results, fields) {
+    connection.query('select username, password from airline_staff union select email, password from booking_agent union select email, password from customer', function (err, fields, results) {
       if (err) {
-        throw err;
+        cb(err, null);
       }
-      console.log(results.toString());
-      fields.forEach(function (field) {
-        console.log(field.toString());
-        if (field === username) {
-          return cb(null, field);
+      results.forEach(function (result) {
+        if (result === username) {
+          return cb(null, result);
         }
       });
     });
-
-    // for (var i = 0, len = records.length; i < len; i++) {
-    //   var record = records[i];
-    //   if (record.username === username) {
-    //     return cb(null, record);
-    //   }
-    // }
     return cb(null, null);
   });
 };

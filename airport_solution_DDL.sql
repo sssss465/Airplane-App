@@ -1,3 +1,5 @@
+-- All ids are now varchar instead of int to add more flexibility
+
 CREATE TABLE `airline` (
   `airline_name` varchar(50) NOT NULL,
   PRIMARY KEY(`airline_name`)
@@ -28,7 +30,7 @@ CREATE TABLE `airline_staff` (
 
 CREATE TABLE `airplane` (
   `airline_name` varchar(50) NOT NULL,
-  `airplane_id` int(11) NOT NULL,
+  `airplane_id` varchar(11) NOT NULL,
   `seats` int(11) NOT NULL,
   PRIMARY KEY(`airline_name`, `airplane_id`),
   FOREIGN KEY(`airline_name`) REFERENCES `airline`(`airline_name`)
@@ -55,7 +57,7 @@ CREATE TABLE `airport` (
 CREATE TABLE `booking_agent` (
   `email` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
-  `booking_agent_id` int(11) NOT NULL,
+  `booking_agent_id` varchar(11) NOT NULL,
   PRIMARY KEY(`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -89,14 +91,14 @@ CREATE TABLE `customer` (
 
 CREATE TABLE `flight` (
   `airline_name` varchar(50) NOT NULL,
-  `flight_num` int(11) NOT NULL,
+  `flight_num` varchar(11) NOT NULL,
   `departure_airport` varchar(50) NOT NULL,
   `departure_time` datetime NOT NULL,
   `arrival_airport` varchar(50) NOT NULL,
   `arrival_time` datetime NOT NULL,
   `price` decimal(10,0) NOT NULL,
   `status` varchar(50) NOT NULL,
-  `airplane_id` int(11) NOT NULL,
+  `airplane_id` varchar(11) NOT NULL,
   PRIMARY KEY(`airline_name`, `flight_num`),
   FOREIGN KEY(`airline_name`, `airplane_id`) REFERENCES `airplane`(`airline_name`, `airplane_id`),
   FOREIGN KEY(`departure_airport`) REFERENCES `airport`(`airport_name`),
@@ -111,9 +113,9 @@ CREATE TABLE `flight` (
 --
 
 CREATE TABLE `ticket` (
-  `ticket_id` int(11) NOT NULL,
+  `ticket_id` varchar(11) NOT NULL,
   `airline_name` varchar(50) NOT NULL,
-  `flight_num` int(11) NOT NULL,
+  `flight_num` varchar(11) NOT NULL,
   PRIMARY KEY(`ticket_id`),
   FOREIGN KEY(`airline_name`, `flight_num`) REFERENCES `flight`(`airline_name`, `flight_num`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -126,9 +128,9 @@ CREATE TABLE `ticket` (
 --
 
 CREATE TABLE `purchases` (
-  `ticket_id` int(11) NOT NULL,
+  `ticket_id` varchar(11) NOT NULL,
   `customer_email` varchar(50) NOT NULL,
-  `booking_agent_id` int(11),
+  `booking_agent_id` varchar(11),
   `purchase_date` date NOT NULL,
   PRIMARY KEY(`ticket_id`, `customer_email`),
   FOREIGN KEY(`ticket_id`) REFERENCES `ticket`(`ticket_id`),
