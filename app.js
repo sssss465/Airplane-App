@@ -75,7 +75,10 @@ passport.use(
       console.log('signing up', username, password);
       console.log(req.body.logintype);
       console.log(req.body);
-      connection.query("(select username, password from airline_staff where username=?) union (select email, password from booking_agent where email=?) union (select email, password from customer where email=?)", [username, username, username], function (err, rows) {
+      const q = {"customer": "select email, password from customer where email=?",
+                 "booking_agent": "(select email, password from booking_agent where email=?)",
+                 "airline_staff": "(select username, password from airline_staff where username=?)" };
+      connection.query(q[req.body.logintype], [username], function (err, rows) {
         if (err)
           return done(err);
         if (rows.length) {
@@ -149,15 +152,20 @@ passport.use(
     },
     function (req, username, password, done) { // callback with email and password from our form
       console.log('login strat hit');
-      connection.query("(select username, password from airline_staff where username=?) union (select email, password from booking_agent where email=?) union (select email, password from customer where email=?)", [username, username, username], function (err, rows) {
+      console.log(username, password);
+      const q = {"customer": "select email, password from customer where email=?",
+                 "booking_agent": "(select email, password from booking_agent where email=?)",
+                 "airline_staff": "(select username, password from airline_staff where username=?)" };
+      connection.query(q[req.body.logintype], [username], function (err, rows) {
         if (err)
           {return done(err);}
         if (!rows.length) {
           return done(null, false, {'loginMessage': 'No user found.'}); // req.flash is the way to set flashdata using connect-flash
         }
         // if the user is found but the password is wrong
-        if (rows[0].password !== md5(password))
-          {return done(null, false, {'loginMessage': 'Oops! Wrong password.'});} // create the loginMessage and save it to session as flashdata
+        if (rows[0].password !== md5(password)){
+          return done(null, false, {'loginMessage': 'Oops! Wrong password.'});
+        } // create the loginMessage and save it to session as flashdata
         console.log("succesful login!!! :D");
         // all is well, return successful user
         return done(null, {id: username, type: req.body.logintype});

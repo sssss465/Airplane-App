@@ -56,7 +56,7 @@ router.post("/register",(req, res, next) => {
     
   })(req, res, next);
 });
-router.post("/login", passport.authenticate('local-login'), (req, res, next) => {
+router.post("/login", (req, res, next) => {
   //redirect to user page if success otherwise stay on login with error
   passport.authenticate('local-login', function(err, user, info){
     if (err) { return next(err); }
