@@ -45,9 +45,13 @@
             <label for="dest_airport">Enter your Destination airport: </label>
             <input type="text" name="dest_airport" id="dest_airport" required>
         </div>
-        <div class="input-field col s12">
+        <div class="input-field col s6">
             <label for="date">Enter departure date</label>
             <input type="text" id="date" name="date" class="datepicker">
+        </div>
+        <div class="input-field col s6">
+            <label for="date2">Enter arrival date</label>
+            <input type="text" id="date2" name="arrival" class="datepicker">
         </div>
         <button class="btn waves-effect waves-light" type="submit">Submit
             <i class="material-icons right">send</i>
@@ -57,7 +61,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var elems = document.querySelectorAll('.datepicker');
-        var instances = M.Datepicker.init(elems, { format: "yyyy-mmm-dd" });
+        var instances = M.Datepicker.init(elems, { format: "yyyy-mm-dd" });
     });
 </script>
 {{/if}}

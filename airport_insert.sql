@@ -19,6 +19,7 @@ insert into airline_staff values ( 'joe123', '12', 'joe', 'smith', '1998-10-12',
 insert into flight values ('China Eastern', 'ce8484',  'JFK',  '2018-01-01 00:00:00','PVG', '2018-01-02 00:00:00',  700, 'upcoming', 'ce135');
 insert into flight values ('China Eastern', 'ce8485', 'JFK', '2018-01-01 00:00:00',  'PVG', '2018-01-02 00:00:00',  900, 'in-progress', 'ce682');
 insert into flight values ('China Eastern', 'ce8486', 'JFK', '2018-01-01 00:00:00',  'PVG', '2018-01-02 00:00:00',  800, 'delayed', 'ce135');
+insert into flight values ('United', 'un8271' 'SFO', '2018-12-01', 'JFK', '2018-12-02', 600, 'upcoming', 'un123');
 /* g. Insert some tickets for corresponding flights. One customer buy ticket directly
 and one customer buy ticket using a booking agent. */
 insert into ticket values('ti-1234', 'China Eastern', 'ce8484');

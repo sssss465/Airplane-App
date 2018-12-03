@@ -1,3 +1,5 @@
+-- All ids are now varchar instead of int to add more flexibility
+
 CREATE TABLE `airline` (
   `airline_name` varchar(50) NOT NULL,
   PRIMARY KEY(`airline_name`)
