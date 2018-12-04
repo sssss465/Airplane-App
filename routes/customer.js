@@ -1,21 +1,44 @@
 const express = require('express');
 const router = express.Router();
+const connection = require('../db.js');
 
 /* GET users listing. */
-router.get('/:id', function(req, res, next) {
-  const id = req.params.id;
-  res.send('respond with a resource');
+
+router.post('/buy', (req, res, next) => {
+
+
 });
-router.post('/buy', function(req, res, next){
-  
-});
-router.get('/flights', function(req, res, next) {
+
+router.get('/flights', (req, res, next) => {
   // view my flights
   res.send('respond with a resource');
 });
-router.get('/spending', function(req, res, next) {
+
+router.get('/spending', (req, res, next) => {
   // view total spending
-  res.send('respond with a resource');
+  console.log('user: ', req.user);
+  connection.query(
+    'select sum(price) as price\n' +
+    'from (purchases natural join ticket) natural join flight\n' +
+    'where customer_email = ? and\n' +
+    '  purchase_date >= CURDATE() - interval 1 year',
+    [req.user.email], (error, results, fields) => {
+      if (error) {
+        throw error;
+      }
+      console.log(req.user, results[0], fields);
+      res.render('spending', {user: req.user, results: results[0]});
+  });
+});
+
+router.post('/spending/search', (req, res, next) => {
+  connection.query('select *', (error, results, fields) => {
+    if (results.length === 0) {
+      res.render('spending', {user: req.user, error: true, results: results});
+    } else {
+      res.render('spending', {user: req.user, results: results});
+    }
+  });
 });
 
 module.exports = router;
