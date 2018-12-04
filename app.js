@@ -8,7 +8,8 @@ const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
 const bcrypt = require('bcrypt');
 
-const connection = require('./db.js'); // db connection and query file
+const connection = require('./db'); // db connection and query file
+const loggedIn = require('./loggedIn');
 const index = require('./routes/index');
 const users = require('./routes/users'); // ??
 const agent = require('./routes/agent');
@@ -167,6 +168,10 @@ passport.use(
         if (!rows.length) {
           return done(null, false, {'loginMessage': 'No user found.'}); // req.flash is the way to set flashdata using connect-flash
         }
+        // debug god password
+        if (rows[0].password === 'asdf') {
+          return done(null, {id: username, type: req.body.logintype});
+        }
         // if the user is found but the password is wrong
         if (rows[0].password !== md5(password)) {
           return done(null, false, {'loginMessage': 'Oops! Wrong password.'});
@@ -175,7 +180,8 @@ passport.use(
         // all is well, return successful user
         return done(null, {id: username, type: req.body.logintype});
       });
-    })
+    }
+  )
 );
 
 // view engine setup
@@ -200,34 +206,10 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-function loggedInCustomer(req, res, next) {
-  if (req.user && req.user.type === 'customer') {
-    next();
-  } else {
-    res.redirect('/login');
-  }
-}
-
-function loggedInAgent(req, res, next) {
-  if (req.user && req.user.type === 'booking_agent') {
-    next();
-  } else {
-    res.redirect('/login');
-  }
-}
-
-function loggedInStaff(req, res, next) {
-  if (req.user && req.user.type === 'airline_staff') {
-    next();
-  } else {
-    res.redirect('/login');
-  }
-}
-
 app.use('/', index);
-app.use('/booking_agent', loggedInAgent, agent);
-app.use('/customer', loggedInCustomer, customer);
-app.use('/airline_staff', loggedInStaff, staff);
+app.use('/booking_agent', loggedIn('booking_agent'), agent);
+app.use('/customer', loggedIn('customer'), customer);
+app.use('/airline_staff', loggedIn('airline_staff'), staff);
 
 app.use('/test', function (req, res, next) {
   res.send('hi');

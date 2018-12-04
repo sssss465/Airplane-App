@@ -34,17 +34,17 @@ router.get('/', function (req, res, next) {
     res.render('index', {user: req.user});
   }
 });
-router.get("/register", (req, res, next) => {
+router.get('/register', (req, res, next) => {
   res.render('register');
 });
-router.get("/login", (req, res, next) => {
+router.get('/login', (req, res, next) => {
   res.render('login');
 });
 router.get('/logout', function (req, res) {
   req.logout();
   res.redirect('/');
 });
-router.post("/register", (req, res, next) => {
+router.post('/register', (req, res, next) => {
   // make db call to check no conflicting users
   // then redirect to user page
   passport.authenticate('local-register', function (err, user, info) {
@@ -67,7 +67,7 @@ router.post("/register", (req, res, next) => {
 
   })(req, res, next);
 });
-router.post("/login", (req, res, next) => {
+router.post('/login', (req, res, next) => {
   //redirect to user page if success otherwise stay on login with error
   passport.authenticate('local-login', function (err, user, info) {
     if (err) {
@@ -84,7 +84,8 @@ router.post("/login", (req, res, next) => {
       if (err) {
         throw err;
       }
-      res.redirect('/');
+      res.redirect(req.session.returnTo || '/');
+      delete req.session.returnTo;
     });
   })(req, res, next);
 });

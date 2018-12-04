@@ -1,0 +1,9 @@
+<div class="row">
+    <p>Your spending is {{results.price}} in the past year</p>
+    <p>Search below for past purchases</p>
+    {{#if error}}
+        <div class="card-panel pink lighten-3">No purchases were found with those queries, please try a new search
+            result.
+        </div>
+    {{/if}}
+</div>
