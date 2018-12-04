@@ -3,10 +3,12 @@ const router = express.Router();
 const connection = require('../db.js');
 
 /* GET users listing. */
+// customer route
 
-router.post('/buy', (req, res, next) => {
-
-
+router.post('/buy', (req, res, next) => { // /customer/buy
+  const ticket = req.body;
+  console.log("bought ticket is ", ticket);
+  res.redirect('back');
 });
 
 router.get('/flights', (req, res, next) => {

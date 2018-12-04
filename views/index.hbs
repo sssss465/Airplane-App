@@ -1,5 +1,8 @@
 <div class="row">
 {{#if results}}
+    {{#if user}}
+        <p> Purchase tickets for flights below!</p>
+    {{/if}}
     <table class="highlight col s12">
     <thead>
         <tr>
@@ -12,27 +15,33 @@
             <th>Price</th>
             <th>Status</th>
             <th>Airplane ID</th>
+            {{#if user }}<th>Buy</th>{{/if}}
         </tr>
     </thead>
     <tbody>
+         {{#if user }}<form action="/{{user.type}}/buy" method="post" class="">{{/if}}
         {{#each results}}
         <tr>
-            <td>{{this.airline_name}}</td>
-            <td>{{this.flight_num}}</td>
-            <td>{{this.departure_airport}}</td>
-            <td>{{this.departure_time}}</td>
-            <td>{{this.arrival_airport}}</td>
-            <td>{{this.arrival_time}}</td>
-            <td>{{this.price}}</td>
-            <td class ="{{this.status}}" >{{this.status}}</td>
-            <td>{{this.airplane_id}}</td>
+                <td>{{this.airline_name}}</td>
+                <td>{{this.flight_num}}</td>
+                <td>{{this.departure_airport}}</td>
+                <td>{{this.departure_time}}</td>
+                <td>{{this.arrival_airport}}</td>
+                <td>{{this.arrival_time}}</td>
+                <td>{{this.price}}</td>
+                <td class ="{{this.status}}" >{{this.status}}</td>
+                <td name = "airplane_id">{{this.airplane_id}}</td>
+                {{#if ../user}}<td><button class="btn waves-effect waves-light" type="submit">Checkout
+            <i class="material-icons right">send</i>
+        </button></td>{{/if}}
         </tr>
         {{/each}}
+          {{#if user }}</form>{{/if}}            
     </tbody>
     </table>
 {{else}}
 <p>Welcome to Airplane-app, the best trip planning site!</p>
-<p>Search below for upcoming flights</p>
+<p>Search below for upcoming flights like JFK to PVG</p>
 {{#if error}}
    <div class="card-panel pink lighten-3">No flights were found with those queries, please try a new search result.</div>
 {{/if}}
