@@ -67,7 +67,7 @@
                 .attr("transform",
                         "translate(" + margin.left + "," + margin.top + ")");
 
-        var data = {{data}};
+        var data = JSON.parse('{{{data}}}');
 
         data.forEach(function (d) {
             d.date = parseDate(d.date);
