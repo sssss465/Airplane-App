@@ -22,7 +22,7 @@ router.get('/', function (req, res, next) {
         throw error;
       }
       // connected!
-      console.log(results);
+      // console.log(results);
       if (results.length === 0) {
         res.render('index', {user: req.user, error: true, results: results});
       } else {

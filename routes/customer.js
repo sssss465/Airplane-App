@@ -6,10 +6,14 @@ const connection = require('../db.js');
 // customer route
 
 router.post('/buy', (req, res, next) => { // /customer/buy
-  const ticket = req.body;
+
+  // first query for number of seats
+  // then we can insert purchases and ticket, after that 
+  const ticket = req.body; 
   console.log("bought ticket is ", ticket);
   res.redirect('back');
 });
+
 
 router.get('/flights', (req, res, next) => {
   // view my flights

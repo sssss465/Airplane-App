@@ -3,6 +3,7 @@
     {{#if user}}
         <p> Purchase tickets for flights below!</p>
     {{/if}}
+     {{#if user }}<form action="/{{user.type}}/buy" method="post" class="">{{/if}}
     <table class="highlight col s12">
     <thead>
         <tr>
@@ -18,8 +19,9 @@
             {{#if user }}<th>Buy</th>{{/if}}
         </tr>
     </thead>
+   
     <tbody>
-         {{#if user }}<form action="/{{user.type}}/buy" method="post" class="">{{/if}}
+       
         {{#each results}}
         <tr>
                 <td>{{this.airline_name}}</td>
@@ -31,14 +33,15 @@
                 <td>{{this.price}}</td>
                 <td class ="{{this.status}}" >{{this.status}}</td>
                 <td name = "airplane_id">{{this.airplane_id}}</td>
-                {{#if ../user}}<td><button class="btn waves-effect waves-light" type="submit">Checkout
+                {{#if ../user}}
+                <td><input type="hidden" name="flight_num" value="{{this.flight_num}}"> <button class="btn waves-effect waves-light" type="submit">Checkout
             <i class="material-icons right">send</i>
         </button></td>{{/if}}
         </tr>
-        {{/each}}
-          {{#if user }}</form>{{/if}}            
+        {{/each}}            
     </tbody>
     </table>
+    {{#if user }}</form>{{/if}}
 {{else}}
 <p>Welcome to Airplane-app, the best trip planning site!</p>
 <p>Search below for upcoming flights like JFK to PVG</p>
