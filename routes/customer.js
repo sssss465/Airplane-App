@@ -6,12 +6,31 @@ const connection = require('../db.js');
 // customer route
 
 router.post('/buy', (req, res, next) => { // /customer/buy
-
   // first query for number of seats
   // then we can insert purchases and ticket, after that 
-  const ticket = req.body; 
-  console.log("bought ticket is ", ticket);
-  res.redirect('back');
+  const flightnum = req.body.flight_num; 
+  connection.query('select flight_num, airline_name, seats from flight natural join airplane where flight_num = ?', [flightnum], (err, results, fields) => {
+    if (err) res.render('index', {buyerr : err});
+    const seats = results[0].seats;
+    const airlinename = results[0].airline_name;
+    connection.query('select count(ticket_id) as c from ticket', (err, results, fields) => {
+      if (err) res.render('index', {buyerr : err});
+      const newticketid = results[0].c + 1;
+      connection.query('select count(ticket_id) as d from ticket where flight_num = ? group by flight_num ', [flightnum], (err, results, fields) => {
+        if (err) res.render('index', {buyerr : err});
+        const ticketsbought = results[0].d;
+        if (seats - ticketsbought <= 0) res.render('index', {buyerr : "no more seats"}); // safe to insert
+        connection.query('insert into ticket values (?,?,?)', [newticketid, airlinename, flightnum], (err, results, fields) => {
+          if (err) res.render('index', {buyerr : err});
+          connection.query('insert into purchases values (?, ?, ?, ?', [newticketid, req.user.id, NULL, new Date().toISOString("YYYY-MM-DD").substring(0,10)], (err, results, fields) => {
+            if (err) res.render('index', {buyerr : err});
+            res.render('success', {msg : "You bought a flight for " + flightnum + " on " + airlinename});
+          });
+        });
+      });
+    });
+  });
+  // res.redirect('back');
 });
 
 

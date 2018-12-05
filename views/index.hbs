@@ -2,6 +2,9 @@
 {{#if results}}
     {{#if user}}
         <p> Purchase tickets for flights below!</p>
+        {{#if buyerr}}
+         <div class="card-panel pink lighten-3">{{buyerr}}</div>
+        {{/if}}
     {{/if}}
      {{#if user }}<form action="/{{user.type}}/buy" method="post" class="">{{/if}}
     <table class="highlight col s12">
@@ -19,9 +22,7 @@
             {{#if user }}<th>Buy</th>{{/if}}
         </tr>
     </thead>
-   
     <tbody>
-       
         {{#each results}}
         <tr>
                 <td>{{this.airline_name}}</td>
@@ -34,7 +35,7 @@
                 <td class ="{{this.status}}" >{{this.status}}</td>
                 <td name = "airplane_id">{{this.airplane_id}}</td>
                 {{#if ../user}}
-                <td><input type="hidden" name="flight_num" value="{{this.flight_num}}"> <button class="btn waves-effect waves-light" type="submit">Checkout
+                <td> <button value="{{this.flight_num}}" name="flight_num" class="btn waves-effect waves-light" type="submit">Checkout
             <i class="material-icons right">send</i>
         </button></td>{{/if}}
         </tr>

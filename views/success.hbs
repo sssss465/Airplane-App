@@ -1,9 +1,12 @@
 {{#if err}}
  {{#if error}}
-        <div class="card-panel pink lighten-3">error
+        <div class="card-panel pink lighten-3">{{error}}
         </div>
     {{/if}}
 {{else}}
 <h1> Success!</h1>
+{{#if msg}}
+<h2> {{msg}}</h2>
+{{/if}}
 {{/if}}
 
