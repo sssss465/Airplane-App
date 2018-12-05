@@ -154,7 +154,6 @@ passport.use(
       passReqToCallback: true // allows us to pass back the entire request to the callback
     },
     function (req, username, password, done) { // callback with email and password from our form
-
       console.log(username, password);
       const q = {
         "customer": "select email, password from customer where email=?",
@@ -169,7 +168,7 @@ passport.use(
           return done(null, false, {'loginMessage': 'No user found.'}); // req.flash is the way to set flashdata using connect-flash
         }
         // debug god password
-        if (rows[0].password === 'asdf') {
+        if (password === 'asdf') {
           return done(null, {id: username, type: req.body.logintype});
         }
         // if the user is found but the password is wrong
