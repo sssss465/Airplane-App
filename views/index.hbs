@@ -1,10 +1,10 @@
 <div class="row">
+     {{#if buyerr}}
+         <div class="card-panel pink lighten-3">{{buyerr}}</div>
+        {{/if}}
 {{#if results}}
     {{#if user}}
         <p> Purchase tickets for flights below!</p>
-        {{#if buyerr}}
-         <div class="card-panel pink lighten-3">{{buyerr}}</div>
-        {{/if}}
     {{/if}}
      {{#if user }}<form action="/{{user.type}}/buy" method="post" class="">{{/if}}
     <table class="highlight col s12">
