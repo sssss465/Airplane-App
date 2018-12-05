@@ -154,7 +154,6 @@ passport.use(
       passReqToCallback: true // allows us to pass back the entire request to the callback
     },
     function (req, username, password, done) { // callback with email and password from our form
-      console.log('login strat hit');
       console.log(username, password);
       const q = {
         "customer": "select email, password from customer where email=?",
