@@ -18,7 +18,7 @@ router.post('/buy', (req, res, next) => { // /customer/buy
       const newticketid = results[0].c + 1;
       connection.query('select count(ticket_id) as d from ticket where flight_num = ? group by flight_num ', [flightnum], (err, results, fields) => {
         if (err) {res.render('index', {buyerr : err}); return; }
-        const ticketsbought = results[0].d;
+        const ticketsbought = (results[0] === undefined) ? 0 : results[0].d;
         if (seats - ticketsbought <= 0) {
           res.render('index', {buyerr : "no more seats"});
           return;
@@ -28,7 +28,7 @@ router.post('/buy', (req, res, next) => { // /customer/buy
           if (err) {res.render('index', {buyerr : err}); return; }
           connection.query('insert into purchases values (?, ?, ?, ?)', [newticketid, req.user.email, null, new Date().toISOString("YYYY-MM-DD").substring(0,10)], (err, results, fields) => {
             if (err) {res.render('index', {buyerr : err}); return; }
-            res.render('success', {msg : "You bought a flight for " + flightnum + " on " + airlinename});
+            res.render('success', {user: req.user, msg : "You bought a flight for " + flightnum + " on " + airlinename});
           });
         });
       });
