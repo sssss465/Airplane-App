@@ -26,10 +26,18 @@ insert into flight values ('United'       , 'un-8271', 'SFO', '2018-12-01', 'JFK
 /* g. Insert some tickets for corresponding flights. One customer buy ticket directly
 and one customer buy ticket using a booking agent. */
 insert into ticket values('ti-1234', 'China Eastern', 'ce8484');
+insert into ticket values('ti-1111', 'China Eastern', 'ce8484');
+insert into ticket values('ti-1112', 'China Eastern', 'ce8484');
+insert into ticket values('ti-1113', 'China Eastern', 'ce8484');
+insert into ticket values('ti-1114', 'China Eastern', 'ce8484');
 insert into ticket values('ti-1235', 'China Eastern', 'ce8484');
 insert into ticket values('ti-1236', 'China Eastern', 'ce8485');
 insert into ticket values('ti-1237', 'China Eastern', 'ce8485');
 
-insert into purchases values ('ti-1234', 'coolcats@gmail.com', NULL, '2018-10-30');
-insert into purchases values ('ti-1235','coolcats@gmail.com', 'cool@sw.com',  '2018-10-30');
-insert into purchases values ('ti-1234', 'nondo@gmail.com', NULL, '2018-10-30');
+insert into purchases values ('ti-1234', 'coolcats@gmail.com', NULL, '2018-10-29');
+insert into purchases values ('ti-1111', 'coolcats@gmail.com', NULL, '2018-9-29');
+insert into purchases values ('ti-1112', 'coolcats@gmail.com', NULL, '2018-9-9');
+insert into purchases values ('ti-1113', 'coolcats@gmail.com', NULL, '2018-9-10');
+insert into purchases values ('ti-1114', 'coolcats@gmail.com', NULL, '2018-8-9');
+insert into purchases values ('ti-1235', 'coolcats@gmail.com', 'cool@sw.com',  '2018-10-30');
+insert into purchases values ('ti-1234', 'sssss465@gmail.com', NULL, '2018-10-31');
