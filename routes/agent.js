@@ -5,11 +5,50 @@ const connection = require('../db');
 /* GET users listing. */
 router.get('/', (req, res, next) => {
   res.render('splash', { user : req.user,
-    action: {"flights": "View your flights",
-                                  "spending": "View your spending"}});
+    action: {"flights": "View your booked customer flights",
+                                  "commission": "View your commission"}});
 });
 router.get('/commission', (req, res, next) => {
-
+  connection.query( "select date_format(purchase_date, '%Y-%m-%d') `date`, sum(price) total, count(price) value\n" +
+  "from (purchases natural join ticket) natural join flight\n" +
+  "where booking_agent_id = ? and\n" +
+  "  purchase_date <= curdate() and\n" +
+  "  purchase_date >= curdate() - interval 30 day\n" +
+  "group by date_format(purchase_date, '%Y-%m-%d'), month(purchase_date)\n" +
+  "order by `date`", [req.user.email], (err, results, fields ) => {
+    if (err) throw err;
+    console.log(results);
+    let totalamt = 0; 
+    let average = 0; 
+    let totalcnt = 0;
+    results.forEach(result => {
+      totalamt += (result.total / 10); 
+      totalcnt += result.value;
+    });
+    average = totalamt / totalcnt;
+    res.render('commission', {results : {totalamt : totalamt, average : average, totalcnt : totalcnt}});
+  });
+});
+router.post('/commission', (req, res, next) => {
+  connection.query( "select date_format(purchase_date, '%Y-%m-%d') `date`, sum(price) total, count(price) value\n" +
+  "from (purchases natural join ticket) natural join flight\n" +
+  "where booking_agent_id = ? and\n" +
+  "  purchase_date <= ? and\n" +
+  "  purchase_date >= ?\n" +
+  "group by date_format(purchase_date, '%Y-%m-%d'), month(purchase_date)\n" +
+  "order by `date`", [req.user.email, req.body.end, req.body.begin], (err, results, fields ) => {
+    if (err) throw err;
+    console.log(results);
+    let totalamt = 0; 
+    let average = 0; 
+    let totalcnt = 0;
+    results.forEach(result => {
+      totalamt += (result.total / 10); 
+      totalcnt += result.value;
+    });
+    average = totalamt / totalcnt;
+    res.render('commission', {results : {totalamt : totalamt, average : average, totalcnt : totalcnt}});
+  });
 });
 router.get('/topcustomers', (req, res, next) => {
 
@@ -71,7 +110,7 @@ router.get('/flights', (req, res, next) => {
     "from flight natural join \n" +
     "         (select distinct flight_num\n" +
     "          from ticket natural join purchases\n" +
-    "          where customer_email = ?\n" +
+    "          where booking_agent_id = ?\n" +
     "         ) customer_flights\n" +
     "where status = 'upcoming'",
     [req.user.email],
@@ -88,11 +127,13 @@ router.post('/flights', (req, res, next) => {
     "from flight natural join \n" +
     "         (select distinct flight_num\n" +
     "          from ticket natural join purchases\n" +
-    "          where customer_email = ?\n" +
+    "          where booking_agent_id = ?\n" +
     "         ) customer_flights\n" +
     "where status = ?",
     [req.user.email, req.body.flight_status],
     (error, results, fields) => {
+      if (error) throw error;
+      console.log(results);
       res.render('view-flights', {user: req.user, status: req.body.flight_status, results: results});
     }
   );
