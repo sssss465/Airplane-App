@@ -1,0 +1,53 @@
+<div class="row">
+    <p>Your {{status}} flights are below</p>
+    <table class="highlight col s12">
+        <thead>
+        <tr>
+            <th>Airline Name</th>
+            <th>Flight Number</th>
+            <th>Departure Airport</th>
+            <th>Departure Time</th>
+            <th>Arrival Airport</th>
+            <th>Arrival Time</th>
+            <th>Price</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each results}}
+            <tr>
+                <td>{{this.airline_name}}</td>
+                <td>{{this.flight_num}}</td>
+                <td>{{this.departure_airport}}</td>
+                <td>{{this.departure_time}}</td>
+                <td>{{this.arrival_airport}}</td>
+                <td>{{this.arrival_time}}</td>
+                <td>{{this.price}}</td>
+                <td class="{{this.status}}">{{this.status}}</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</div>
+<div class="row">
+    <form action="/customer/flights" method="post" class="col s12 center-align">
+        <div class="input-field col s12">
+            <select name="flight_status">
+                <option value="upcoming">Upcoming</option>
+                <option value="in-progress">In Progress</option>
+                <option value="delayed">Delayed</option>
+            </select>
+            <label>Select flight status</label>
+        </div>
+        <button class="btn waves-effect waves-light" type="submit">Submit
+            <i class="material-icons right">send</i>
+        </button>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var elems = document.querySelectorAll('select');
+        var instances = M.FormSelect.init(elems, {});
+    });
+</script>
