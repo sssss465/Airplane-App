@@ -19,20 +19,22 @@ insert into airplane values ('China Eastern','ce135', 100); #swap name id
 insert into airplane values ('China Eastern', 'ce682', 100);
 insert into airplane values ('United', 'un123', 100);
 /* f. Insert several flights with upcoming, in-progress, delayed statuses. */
+insert into flight values ('China Eastern', 'ce-8482', 'JFK', '2018-01-01', 'PVG', '2018-01-02', 700, 'upcoming', 'ce135');
+insert into flight values ('China Eastern', 'ce-8483', 'JFK', '2018-01-01', 'PVG', '2018-01-02', 700, 'upcoming', 'ce135');
 insert into flight values ('China Eastern', 'ce-8484', 'JFK', '2018-01-01', 'PVG', '2018-01-02', 700, 'upcoming', 'ce135');
 insert into flight values ('China Eastern', 'ce-8485', 'JFK', '2018-01-01', 'PVG', '2018-01-02', 900, 'in-progress', 'ce682');
 insert into flight values ('China Eastern', 'ce-8486', 'JFK', '2018-01-01', 'PVG', '2018-01-02', 800, 'delayed', 'ce135');
 insert into flight values ('United'       , 'un-8271', 'SFO', '2018-12-01', 'JFK', '2018-12-02', 600, 'upcoming', 'un123');
 /* g. Insert some tickets for corresponding flights. One customer buy ticket directly
 and one customer buy ticket using a booking agent. */
-insert into ticket values('ti-1234', 'China Eastern', 'ce8484');
-insert into ticket values('ti-1111', 'China Eastern', 'ce8484');
-insert into ticket values('ti-1112', 'China Eastern', 'ce8484');
-insert into ticket values('ti-1113', 'China Eastern', 'ce8484');
-insert into ticket values('ti-1114', 'China Eastern', 'ce8484');
-insert into ticket values('ti-1235', 'China Eastern', 'ce8484');
-insert into ticket values('ti-1236', 'China Eastern', 'ce8485');
-insert into ticket values('ti-1237', 'China Eastern', 'ce8485');
+insert into ticket values('ti-1234', 'China Eastern', 'ce-8484');
+insert into ticket values('ti-1111', 'China Eastern', 'ce-8484');
+insert into ticket values('ti-1112', 'China Eastern', 'ce-8485');
+insert into ticket values('ti-1113', 'China Eastern', 'ce-8486');
+insert into ticket values('ti-1114', 'China Eastern', 'ce-8483');
+insert into ticket values('ti-1235', 'China Eastern', 'ce-8482');
+insert into ticket values('ti-1236', 'China Eastern', 'ce-8485');
+insert into ticket values('ti-1237', 'China Eastern', 'ce-8485');
 
 insert into purchases values ('ti-1234', 'coolcats@gmail.com', NULL, '2018-10-29');
 insert into purchases values ('ti-1111', 'coolcats@gmail.com', NULL, '2018-9-29');

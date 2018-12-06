@@ -1,37 +1,37 @@
 <div class="row section">
     {{#if message}}
-   <div class="card-panel pink lighten-3">{{message}}</div>
-{{/if}}
-<form action="/login" method="post" class= "col s12 center-align">
-    <div class="input-field col s12">
-    <select name="logintype">
-      <option value="customer">Customer</option>
-      <option value="booking_agent">Agent</option>
-      <option value="airline_staff">Staff</option>
-    </select>
-    <label>Login As</label>
-  </div>
-    <div class="input-field col s6">
-        <input id="email" name="email" type="text" class="validate" required>
-        <label for="email">Email</label>
-    </div>
-    <div class="input-field col s6">
-        <input id="password" name="password" type="password" class="validate" required>
-        <label for="password">Password</label>
-    </div>
-   <button class="btn waves-effect waves-light" type="submit">Submit
-        <i class="material-icons right">send</i>
-    </button>
-</form>
+        <div class="card-panel pink lighten-3">{{message}}</div>
+    {{/if}}
+    <form action="/login" method="post" class="col s12 center-align">
+        <div class="input-field col s12">
+            <select name="logintype">
+                <option value="customer">Customer</option>
+                <option value="booking_agent">Agent</option>
+                <option value="airline_staff">Staff</option>
+            </select>
+            <label>Login As</label>
+        </div>
+        <div class="input-field col s6">
+            <input id="email" name="email" type="text" class="validate" required>
+            <label for="email">Email</label>
+        </div>
+        <div class="input-field col s6">
+            <input id="password" name="password" type="password" class="validate" required>
+            <label for="password">Password</label>
+        </div>
+        <button class="btn waves-effect waves-light" type="submit">Submit
+            <i class="material-icons right">send</i>
+        </button>
+    </form>
 </div>
 <script>
-      document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('select');
-    var instances = M.FormSelect.init(elems, {});
-  });
-   document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function () {
+        var elems = document.querySelectorAll('select');
+        var instances = M.FormSelect.init(elems, {});
+    });
+    document.addEventListener('DOMContentLoaded', function () {
         var elems = document.querySelectorAll('.datepicker');
-        var instances = M.Datepicker.init(elems, { format: "yyyy-mm-dd" });
+        var instances = M.Datepicker.init(elems, {format: "yyyy-mm-dd"});
     });
 </script>
 
