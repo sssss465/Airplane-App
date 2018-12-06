@@ -4,7 +4,11 @@ const connection = require('../db.js');
 
 /* GET users listing. */
 // customer route
-
+router.get('/', (req, res, next) => {
+  res.render('splash', { user : req.user,
+    action: {"flights": "View your flights",
+                                  "spending": "View your spending"}});
+});
 router.post('/buy', (req, res, next) => {
   // /customer/buy
   // first query for number of seats
