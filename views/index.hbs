@@ -8,6 +8,12 @@
         {{/if}}
         {{#if user }}
         <form action="/{{user.type}}/buy" method="post" class="">{{/if}}
+        {{#ifequals user.type "booking_agent"}}
+        <div class="input-field">
+            <label for="cemail">Enter customer email</label>
+            <input id="cemail" type="text" name="cemail" required>
+        </div>
+        {{/ifequals}}
         <table class="highlight col s12">
             <thead>
             <tr>
