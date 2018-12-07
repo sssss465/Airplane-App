@@ -2,6 +2,10 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const connection = require('../db.js');
+const hbs = require('hbs');
+hbs.registerHelper('ifequals', function(arg1, arg2, options){
+  return (arg1 === arg2 ) ? options.fn(this) : options.inverse(this);
+});
 
 /* GET home page. */
 // https://stackoverflow.com/a/20719659 in order to pass the variable from app.js to the router

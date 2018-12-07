@@ -1,0 +1,25 @@
+<div class="row">
+    {{#if results}}
+        <p>Your total commission over the range (default 30 days) is {{results.totalamt}} with an average commision of {{results.average}} and {{results.totalcnt}} total tickets sold.</p>
+    {{/if}}
+    <p> Search for more dates?</p>
+    <form action="/booking_agent/commission" method="post" class="col s12 center-align">
+        <div class="input-field col s6">
+            <label for="date">Enter beginning search date</label>
+            <input type="text" id="date" name="begin" class="datepicker">
+        </div>
+        <div class="input-field col s6">
+            <label for="date2">Enter ending search date date</label>
+            <input type="text" id="date2" name="end" class="datepicker">
+        </div>
+        <button class="btn waves-effect waves-light" type="submit">Submit
+            <i class="material-icons right">send</i>
+        </button>
+    </form>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var elems = document.querySelectorAll('.datepicker');
+        var instances = M.Datepicker.init(elems, {format: "yyyy-mm-dd"});
+    });
+</script>
