@@ -58,7 +58,7 @@
 
     data.forEach(function (d) {
         d.customer_email = d.customer_email; //parseDate(d.date);
-        d.total = +d.total;
+        d.total = +d.total * 0.1;
     });
 
     x.domain(data.map(function (d) {
