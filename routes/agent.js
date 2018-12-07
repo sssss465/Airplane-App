@@ -6,7 +6,8 @@ const connection = require('../db');
 router.get('/', (req, res, next) => {
   res.render('splash', { user : req.user,
     action: {"flights": "View your booked customer flights",
-                                  "commission": "View your commission"}});
+                                  "commission": "View your commission",
+                                'topcustomers': "View top five customers based on ticket quantity and ticket sales"}});
 });
 router.get('/commission', (req, res, next) => {
   connection.query( "select date_format(purchase_date, '%Y-%m-%d') `date`, sum(price) total, count(price) value\n" +
