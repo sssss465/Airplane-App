@@ -1,0 +1,194 @@
+<div class="row">
+    <p>Top 5 customers sorted by commission and by amount of ticket sales</p>
+    <div class="d3chart col s12 center-align"></div>
+    <div class="d3chart col s12 center-align"></div>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var elems = document.querySelectorAll('.datepicker');
+        var instances = M.Datepicker.init(elems, {format: "yyyy-mm-dd"});
+    });
+</script>
+<style>
+
+    .axis {
+        font: 10px sans-serif;
+    }
+
+    .axis path,
+    .axis line {
+        fill: none;
+        stroke: #000;
+        shape-rendering: crispEdges;
+    }
+
+</style>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script>
+    var margin = {top: 20, right: 20, bottom: 70, left: 50};
+    var width = 600 - margin.left - margin.right;
+    var height = 300 - margin.top - margin.bottom;
+
+    // Parse the date / time
+    var parseDate = d3.time.format("%Y-%m").parse;
+
+    var x = d3.scale.ordinal().rangeRoundBands([0, width], .05);
+
+    var y = d3.scale.linear().range([height, 0]);
+
+    var xAxis = d3.svg.axis()
+            .scale(x)
+            .orient("bottom");
+
+    var yAxis = d3.svg.axis()
+            .scale(y)
+            .orient("left")
+            .ticks(10);
+
+    var svg = d3.select(".d3chart").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform",
+                    "translate(" + margin.left + "," + margin.top + ")");
+
+    var data = JSON.parse('{{{sortedbytotal}}}');
+
+    data.forEach(function (d) {
+        d.customer_email = d.customer_email; //parseDate(d.date);
+        d.total = +d.total * 0.1;
+    });
+
+    x.domain(data.map(function (d) {
+        return d.customer_email;
+    }));
+    y.domain([0, d3.max(data, function (d) {
+        return d.total;
+    })]);
+    svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xAxis)
+            .selectAll("text")
+            //.style("text-anchor", "end")
+            .attr("dx", "-.8em");
+            // .attr("dy", "-.55em")
+            //.attr("transform", "rotate(-45)");
+     svg.append("g")
+            .attr("class", "y axis")
+            .call(yAxis)
+            .append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0 - margin.left)
+            .attr("x", 0 - (height/2))
+            .attr("dy", ".71em")
+            .style("text-anchor", "middle")
+            .text("Commission earned");
+
+    svg.selectAll("bar")
+            .data(data)
+            .enter().append("rect")
+            .style("fill", "steelblue")
+            .attr("x", function (d) {
+                return x(d.customer_email);
+            })
+            .attr("width", x.rangeBand())
+            .attr("y", function (d) {
+                return y(d.total);
+            })
+            .attr("height", function (d) {
+                return height - y(d.total);
+            });
+    svg.append("text")
+        .attr("x", (width / 2))             
+        .attr("y", 0 - (margin.top / 2))
+        .attr("text-anchor", "middle")  
+        .style("font-size", "13px") 
+        .style("text-decoration", "underline")  
+        .text("Customer by commission");
+</script>
+<script>
+    var margin = {top: 20, right: 20, bottom: 70, left: 40};
+    var width = 600 - margin.left - margin.right;
+    var height = 300 - margin.top - margin.bottom;
+
+    // Parse the date / time
+    var parseDate = d3.time.format("%Y-%m").parse;
+
+    var x = d3.scale.ordinal().rangeRoundBands([0, width], .05);
+
+    var y = d3.scale.linear().range([height, 0]);
+
+    var xAxis = d3.svg.axis()
+            .scale(x)
+            .orient("bottom");
+
+    var yAxis = d3.svg.axis()
+            .scale(y)
+            .orient("left")
+            .ticks(10);
+
+    var svg = d3.select(".d3chart").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform",
+                    "translate(" + margin.left + "," + margin.top + ")");
+
+    var data = JSON.parse('{{{sortedbycount}}}');
+
+    data.forEach(function (d) {
+        d.customer_email = d.customer_email; //parseDate(d.date);
+        d.total = +d.total;
+    });
+
+    x.domain(data.map(function (d) {
+        return d.customer_email;
+    }));
+    y.domain([0, d3.max(data, function (d) {
+        return d.value;
+    })]);
+    svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xAxis)
+            .selectAll("text")
+            //.style("text-anchor", "end")
+            .attr("dx", "-.8em");
+            // .attr("dy", "-.55em")
+            //.attr("transform", "rotate(-45)");
+    svg.append("g")
+            .attr("class", "y axis")
+            .call(yAxis)
+            .append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0 - margin.left)
+            .attr("x", 0 - (height/2))
+            .attr("dy", ".71em")
+            .style("text-anchor", "middle")
+            .text("Tickets bought");
+
+    svg.selectAll("bar")
+            .data(data)
+            .enter().append("rect")
+            .style("fill", "steelblue")
+            .attr("x", function (d) {
+                return x(d.customer_email);
+            })
+            .attr("width", x.rangeBand())
+            .attr("y", function (d) {
+                return y(d.value);
+            })
+            .attr("height", function (d) {
+                return height - y(d.value);
+            });
+    svg.append("text")
+        .attr("x", (width / 2))             
+        .attr("y", 0 - (margin.top / 2))
+        .attr("text-anchor", "middle")  
+        .style("font-size", "13px") 
+        .style("text-decoration", "underline")  
+        .text("Customer by tickets bought");
+</script>
