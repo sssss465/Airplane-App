@@ -27,7 +27,7 @@ router.get('/commission', (req, res, next) => {
       totalcnt += result.value;
     });
     average = totalamt / totalcnt;
-    res.render('commission', {results : {totalamt : totalamt, average : average, totalcnt : totalcnt}});
+    res.render('commission', {user : req.user, results : {totalamt : totalamt, average : average, totalcnt : totalcnt}});
   });
 });
 router.post('/commission', (req, res, next) => {
@@ -48,11 +48,35 @@ router.post('/commission', (req, res, next) => {
       totalcnt += result.value;
     });
     average = totalamt / totalcnt;
-    res.render('commission', {results : {totalamt : totalamt, average : average, totalcnt : totalcnt}});
+    res.render('commission', {user: req.user, results : {totalamt : totalamt, average : average, totalcnt : totalcnt}});
   });
 });
 router.get('/topcustomers', (req, res, next) => {
+  // View Top Customers: Top 5 customers based on number of tickets bought from the booking agent in the past 6 months and top 5 customers based on amount of commission received in the last year. Show a bar chart showing each of these 5 customers in x-axis and number of tickets bought in y-axis. Show another bar chart showing each of these 5 customers in x-axis and amount commission received in y- axis.
+  connection.query("select customer_email, sum(price) total, count(price) value \n" +
+  "from (purchases natural join ticket) natural join flight\n" +
+  "where booking_agent_id = ? and\n" +
+  "  purchase_date <= curdate() and\n" +
+  "  purchase_date >= curdate() - interval 6 month\n" +
+  "group by customer_email\n" +
+  "order by sum(price) desc limit 5", [req.user.email], (err, results, fields) => {
+    if (err) throw err;
+    const sortedbytotal = results;
 
+    connection.query("select customer_email, sum(price) total, count(price) value\n" +
+    "from (purchases natural join ticket) natural join flight\n" +
+    "where booking_agent_id = ? and\n" +
+    "  purchase_date <= curdate() and\n" +
+    "  purchase_date >= curdate() - interval 6 month\n" +
+    "group by customer_email\n" +
+    "order by count(price) desc limit 5", [req.user.email], (err, results, fields) => {
+      if (err) throw err;
+      console.log(sortedbytotal);
+      console.log(results);
+      res.render('topfivecustomer', {user: req.user, sortedbytotal: JSON.stringify(sortedbytotal), sortedbycount: JSON.stringify(results)});
+
+    });
+  });
 });
 // TODO: change form to buy on behalf of customer
 router.post('/buy', (req, res, next) => {
