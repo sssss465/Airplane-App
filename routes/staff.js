@@ -10,10 +10,10 @@ router.get('/', (req, res, next) => {
       "createflight": "Create new flights",
       "createplane": "Create new planes",
       'createairport': "Create new airports",
-      'viewbookingagents': "Create new airports",
-      'viewcustomers': "Create new airports",
-      'revenue': "Create new airports",
-      'topdestinations': "Create new airports",
+      'viewbookingagents': "View booking agents",
+      'viewcustomers': "View customers",
+      'revenue': "Revenue from direct vs indirect sales",
+      'topdestinations': "3 most popular destinations for last 3 monts and last yr",
     }
   });
 });
@@ -44,10 +44,22 @@ router.post('/createplane', (req, res, next) => {
   });
 });
 router.get('/createairport', (req, res, next) => {
-
+  res.render('createairport');
 });
 router.post('/createairport', (req, res, next) => {
-
+  connection.query('insert into airport values (?,?)', [req.body.airport_name, req.body.airport_city], (err, results, flds) => {
+    if (err) {
+      res.render('createairport', {
+        user: req.user,
+        err: true
+      });
+    } else {
+      res.render('createairport', {
+        user: req.user,
+        succ: true
+      });
+    }
+  });
 });
 router.get('/viewbookingagents', (req, res, next) => {
 
