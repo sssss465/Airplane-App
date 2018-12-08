@@ -62,7 +62,36 @@ router.post('/createairport', (req, res, next) => {
   });
 });
 router.get('/viewbookingagents', (req, res, next) => {
+  connection.query("select booking_agent_id, sum(price) total, count(price) value \n" +
+  "from (purchases natural join ticket) natural join flight\n" +
+  "  where purchase_date <= curdate() and\n" +
+  "  purchase_date >= curdate() - interval 12 month and booking_agent_id is not null\n" +
+  "group by booking_agent_id\n" +
+  "order by sum(price) desc limit 5", (err, results, fields) => {
+    if (err) {throw err;}
+    const sortedbytotal = results;
 
+    connection.query("select booking_agent_id, sum(price) total, count(price) value\n" +
+    "from (purchases natural join ticket) natural join flight\n" +
+    "  where purchase_date <= curdate() and\n" +
+    "  purchase_date >= curdate() - interval 1 month and booking_agent_id is not null\n" +
+    "group by booking_agent_id\n" +
+    "order by count(price) desc limit 5", (err, results, fields) => {
+      if (err) {throw err;}
+      const sortedbyonemonth = results;
+      connection.query("select booking_agent_id, sum(price) total, count(price) value\n" +
+      "from (purchases natural join ticket) natural join flight\n" +
+      "  where purchase_date <= curdate() and\n" +
+      "  purchase_date >= curdate() - interval 12 month and booking_agent_id is not null\n" +
+      "group by booking_agent_id\n" +
+      "order by count(price) desc limit 5", (err, results, fields) => {
+        if (err) {throw err;}
+        console.log(sortedbytotal, sortedbyonemonth);
+        console.log(results);
+        res.render('topfivebookingagent', {user: req.user, sortedbytotal: JSON.stringify(sortedbytotal), sortedbycount: JSON.stringify(results), sortedbyonemonth: JSON.stringify(sortedbyonemonth)});
+      });
+    });
+  });
 });
 router.get('/viewcustomers', (req, res, next) => {
 
