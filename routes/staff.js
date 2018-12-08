@@ -104,7 +104,7 @@ router.post('/createplane', (req, res, next) => {
   });
 });
 router.get('/createairport', (req, res, next) => {
-  res.render('createairport');
+  res.render('createairport', {user: req.user});
 });
 router.post('/createairport', (req, res, next) => {
   connection.query('insert into airport values (?,?)', [req.body.airport_name, req.body.airport_city], (err, results, flds) => {
@@ -207,6 +207,7 @@ router.get('/reports', (req, res, next) => {
       }
       console.log(results);
       res.render('reports', {
+        user: req.user,
         res: JSON.stringify(results)
       });
     });
@@ -223,6 +224,7 @@ router.post('/reports', (req, res, next) => {
         throw err;
       }
       res.render('reports', {
+        user: req.user,
         res: JSON.stringify(results)
       });
     });
@@ -264,6 +266,7 @@ router.get('/revenue', (req, res, next) => {
                 "order by `date`", (err, results, fields) => {
                   if (err) throw err;
                   res.render('revenue', {
+                    user: req.user,
                     thirtydaynull : JSON.stringify(thirtydaynull),
                     thirtyday: JSON.stringify(thirtyday),
                     oneyearnull: JSON.stringify(results),
