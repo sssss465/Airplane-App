@@ -12,6 +12,7 @@ router.get('/', (req, res, next) => {
       'createairport': "Create new airports",
       'viewbookingagents': "View booking agents",
       'viewcustomers': "View customers",
+      'reports' : "Total amount of tickets sold given range of dates",
       'revenue': "Revenue from direct vs indirect sales",
       'topdestinations': "3 most popular destinations for last 3 monts and last yr",
     }
@@ -110,6 +111,31 @@ router.post('/viewcustomers', (req, res, next) => {
     if (err) {throw err;}
     console.log(results);
     res.render('viewcustomers', {user: req.user, err: (results.length === 0), results: results});
+  });
+});
+router.get('/reports', (req, res, next) => {
+  connection.query("select date_format(purchase_date, '%Y-%m') `date`, sum(price) total, count(price) value\n" +
+  "from (purchases natural join ticket) natural join flight\n" +
+  "where\n" +
+  "  purchase_date <= curdate() and\n" +
+  "  purchase_date >= curdate() - interval 30 day\n" +
+  "group by date_format(purchase_date, '%Y-%m'), month(purchase_date)\n" +
+  "order by `date`", [], (err, results, fields) => {
+      if (err) {throw err;}
+      console.log(results);
+      res.render('reports', {res: JSON.stringify(results)});
+  });
+});
+router.post('/reports', (req, res, next) => {
+  connection.query("select date_format(purchase_date, '%Y-%m') `date`, count(price) value\n" +
+  "from (purchases natural join ticket) natural join flight\n" +
+  "where\n" +
+  "  purchase_date <= ? and\n" +
+  "  purchase_date >= ?\n" +
+  "group by date_format(purchase_date, '%Y-%m'), month(purchase_date)\n" +
+  "order by `date`", [req.body.end, req.body.begin], (err, results, fields) => {
+    if (err) {throw err;}
+    res.render('reports', {res: JSON.stringify(results)});
   });
 });
 router.get('/revenue', (req, res, next) => {
