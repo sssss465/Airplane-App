@@ -67,9 +67,6 @@ passport.use(
     function (req, username, password, done) {
       // find a user whose email is the same as the forms email
       // we are checking to see if the user trying to login already exists
-      console.log('signing up', username, password);
-      console.log(req.body.logintype);
-      console.log(req.body);
       const q = {
         "customer": "select email, password from customer where email=?",
         "booking_agent": "(select email, password from booking_agent where email=?)",
@@ -95,7 +92,7 @@ passport.use(
             user.first_name = username;
             user.last_name = username; // lol
             user.date_of_birth = req.body.dob;
-            user.airline_name = "United";
+            user.airline_name = req.body.airl_name;
           } else if (req.body.logintype === "booking_agent") {
             user.email = req.body.email;
             user.password = newUserMysql.password;
@@ -115,7 +112,6 @@ passport.use(
             user.passportcountry = req.body.passportcountry;
             user.date_of_birth = req.body.dob;
           }
-          console.log(user);
           let insertQuery = "INSERT INTO " + req.body.logintype;
           const values = Object.values(user).filter(v => v !== '');// no empty fields
           insertQuery += " values (";
@@ -126,10 +122,9 @@ passport.use(
             }
             insertQuery += "?, ";
           }
-          console.log(insertQuery, values);
           connection.query(insertQuery, values, function (err, rows) {
             if (err) {
-              throw err;
+              return done(null, false, {'signupMessage': 'Invalid Airline!'});
             }
             console.log("succesfully added", user);
             return done(null, newUserMysql); // for application

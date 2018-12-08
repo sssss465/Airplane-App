@@ -1,96 +1,114 @@
 <div class="row section">
     {{#if message}}
-   <div class="card-panel pink lighten-3">{{message}}</div>
-{{/if}}
-<form action="/register" method="post" class= "col s12 center-align">
-    <div class="input-field col s12">
-    <select name="logintype" id="logintype">
-      <option value="customer">Customer</option>
-      <option value="booking_agent">Agent</option>
-      <option value="airline_staff">Staff</option>
-    </select>
-    <label>Register As</label>
-  </div>
-  <div class="input-field col s12">
-    <label for="name">Enter your name: </label>
-    <input type="text" name="name" id="name" required>
-  </div>
-    <div class="input-field col s6">
-        <input id="email" name="email" type="email" class="validate" required>
-        <label for="email">Email</label>
-    </div>
-    <div class="input-field col s6">
-        <input id="password" name="password" name="password" type="password" class="validate" required>
-        <label for="password">Password</label>
-    </div>
-    <div class="input-field col s3 bldn">
-        <input id="bldn" name="bldn" type="text" class="validate" required>
-        <label for="bldn">Building number</label>
-    </div>
-      <div class="input-field col s3 Street">
-        <input id="Street" name="street" type="text" class="validate" required>
-        <label for="Street">Street</label>
-    </div>
-      <div class="input-field col s3 City">
-        <input id="City" name="city" type="text" class="validate" required>
-        <label for="City">City</label>
-    </div>
-      <div class="input-field col s3 State">
-        <input id="State" name="state" type="text" class="validate" required>
-        <label for="State" name="state">State</label>
-    </div>
-      <div class="input-field col s6 Phone">
-        <i class="material-icons prefix">phone</i>
-        <input id="Phone" name="phone" type="tel" class="validate" required>
-        <label for="Phone">Phone Number</label>
-    </div>
-       <div class="input-field col s6 passportnumber">
-        <input id="passportnumber" name="passportnumber" type="text" class="validate" required>
-        <label for="passportnumber">Passport Number</label>
-    </div>
-    <div class="input-field col s6 exp">
+        <div class="card-panel pink lighten-3">{{message}}</div>
+    {{/if}}
+    <form action="/register" method="post" class="col s12 center-align">
+        <div class="input-field col s12">
+            <select name="logintype" id="logintype">
+                <option value="customer">Customer</option>
+                <option value="booking_agent">Agent</option>
+                <option value="airline_staff">Staff</option>
+            </select>
+            <label>Register As</label>
+        </div>
+        <div class="input-field col s12">
+            <label for="name">Enter your name: </label>
+            <input type="text" name="name" id="name" required>
+        </div>
+        <div class="input-field col s6">
+            <input id="email" name="email" type="email" class="validate" required>
+            <label for="email">Email</label>
+        </div>
+        <div class="input-field col s6">
+            <input id="password" name="password" type="password" class="validate" required>
+            <label for="password">Password</label>
+        </div>
+        <div class="input-field col s3 bldn">
+            <input id="bldn" name="bldn" type="text" class="validate" required>
+            <label for="bldn">Building number</label>
+        </div>
+        <div class="input-field col s3 Street">
+            <input id="Street" name="street" type="text" class="validate" required>
+            <label for="Street">Street</label>
+        </div>
+        <div class="input-field col s3 City">
+            <input id="City" name="city" type="text" class="validate" required>
+            <label for="City">City</label>
+        </div>
+        <div class="input-field col s3 State">
+            <input id="State" name="state" type="text" class="validate" required>
+            <label for="State" name="state">State</label>
+        </div>
+        <div class="input-field col s6 Phone">
+            <i class="material-icons prefix">phone</i>
+            <input id="Phone" name="phone" type="tel" class="validate" required>
+            <label for="Phone">Phone Number</label>
+        </div>
+        <div class="input-field col s6 passportnumber">
+            <input id="passportnumber" name="passportnumber" type="text" class="validate" required>
+            <label for="passportnumber">Passport Number</label>
+        </div>
+        <div class="input-field col s6 exp">
             <label for="exp">Passport expiration</label>
-            <input placeholder="date" id="exp" type="text" id="exp" name="exp" class="datepicker">
-    </div>
-    <div class="input-field col s6 passportcountry">
-        <input id="passportcountry" name="passportcountry" type="text" class="validate" required>
-        <label for="passportcountry">Passport country</label>
-    </div>
-    <div class="input-field col s12 dob">
+            <input placeholder="date" id="exp" type="text" name="exp" class="datepicker">
+        </div>
+        <div class="input-field col s6 passportcountry">
+            <input id="passportcountry" name="passportcountry" type="text" class="validate" required>
+            <label for="passportcountry">Passport country</label>
+        </div>
+        <div class="input-field col s12 dob">
             <label for="dob">Date of Birth</label>
             <input placeholder="date" type="text" id="dob" name="dob" class="datepicker">
-    </div>
-   <button class="btn waves-effect waves-light" type="submit">Submit
-        <i class="material-icons right">send</i>
-    </button>
-</form>
+        </div>
+        <div class="input-field col s12 airl_name" style="display: none;">
+            <input id="airl_name" name="airl_name" type="text" class="validate">
+            <label for="airl_name" name="state">Airline Name</label>
+        </div>
+        <button class="btn waves-effect waves-light" type="submit">Submit
+            <i class="material-icons right">send</i>
+        </button>
+    </form>
 </div>
 <script>
-      document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('select');
-    var instances = M.FormSelect.init(elems, {});
-  });
-   document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function () {
+        var elems = document.querySelectorAll('select');
+        var instances = M.FormSelect.init(elems, {});
+    });
+    document.addEventListener('DOMContentLoaded', function () {
         var elems = document.querySelectorAll('.datepicker');
-        var instances = M.Datepicker.init(elems, { format: "yyyy-mm-dd" });
-        $("#logintype").change(function(){
-            var val = $("#logintype").val();
-            var all = [".bldn", ".Street", ".City", ".State", ".Phone", ".passportnumber", ".exp", ".passportcountry", ".dob"];
-            if (val === "airline_staff" || val === "booking_agent"){
-               for (var att in all){
-                   $(all[att]).removeAttr('required');
-                   if (val === "airline_staff" && all[att] === ".dob") {
-                       $(all[att]).show();
-                       continue;}
-                   $(all[att]).hide();
-               }
-                $('form').attr('novalidate', 'novalidate');
-            } else {
-                $('form').prop('novalidate', 'false');
-                for (var att in all){
-                   $(all[att]).show();
-                   $(all[att]).prop('required', true);
-                }
+        var instances = M.Datepicker.init(elems, {format: "yyyy-mm-dd"});
+        $("#logintype").change(function () {
+            var logintype = $("#logintype").val();
+            var all = [".bldn", ".Street", ".City", ".State", ".Phone", ".passportnumber", ".exp", ".passportcountry", ".dob", '.airl_name'];
+            switch (logintype) {
+                case 'airline_staff':
+                    for (var att in all) {
+                        $(all[att]).removeAttr('required');
+                        if (all[att] === ".dob" || all[att] === '.airl_name')
+                            $(all[att]).show();
+                        else
+                            $(all[att]).hide();
+                    }
+                    $('form').attr('novalidate', 'novalidate');
+                    break;
+                case 'booking_agent':
+                    for (var att in all) {
+                        $(all[att]).removeAttr('required');
+                        $(all[att]).hide();
+                    }
+                    $('form').attr('novalidate', 'novalidate');
+                    break;
+                case 'customer':
+                    $('form').prop('novalidate', 'false');
+                    for (var att in all) {
+                        $(all[att]).show();
+                        if (all[att] === '.airl_name')
+                            $(all[att]).hide();
+                        $(all[att]).prop('required', true);
+                    }
+                    break;
+                default:
+                    console.log('Default case error. ', logintype, all);
             }
         });
     });
