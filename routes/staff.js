@@ -94,7 +94,23 @@ router.get('/viewbookingagents', (req, res, next) => {
   });
 });
 router.get('/viewcustomers', (req, res, next) => {
-
+  connection.query("select customer_email, sum(price) total, count(price) value\n" +
+      "from (purchases natural join ticket) natural join flight\n" +
+      "  where purchase_date <= curdate() and\n" +
+      "  purchase_date >= curdate() - interval 12 month\n" +
+      "group by customer_email\n" +
+      "order by count(price) desc limit 1", (err, results, fields) => {
+        if (err) {throw err;}
+        console.log(results);
+        res.render('viewcustomers', {user: req.user, cust: results[0].customer_email});
+      });
+});
+router.post('/viewcustomers', (req, res, next) => {
+  connection.query("select airline_name, flight_num, departure_airport, departure_time, arrival_airport, arrival_time, price, status, airplane_id from (purchases natural join ticket) natural join flight where customer_email = ? and airline_name= ?", [req.body.email, req.user.airline_name] , (err, results, fields) => {
+    if (err) {throw err;}
+    console.log(results);
+    res.render('viewcustomers', {user: req.user, err: (results.length === 0), results: results});
+  });
 });
 router.get('/revenue', (req, res, next) => {
 
