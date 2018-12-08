@@ -11,6 +11,7 @@
             <th>Arrival Time</th>
             <th>Price</th>
             <th>Status</th>
+            <th>Customer Name</th>
         </tr>
         </thead>
         <tbody>
@@ -24,6 +25,7 @@
                 <td>{{this.arrival_time}}</td>
                 <td>{{this.price}}</td>
                 <td class="{{this.status}}">{{this.status}}</td>
+                <td>{{this.name}}</td>
             </tr>
         {{/each}}
         </tbody>
@@ -31,13 +33,21 @@
 </div>
 <div class="row">
     <form action="/{{user.type}}/flights" method="post" class="col s12 center-align">
-        <div class="input-field col s12">
-            <select name="flight_status">
-                <option value="upcoming">Upcoming</option>
-                <option value="in-progress">In Progress</option>
-                <option value="delayed">Delayed</option>
-            </select>
-            <label>Select flight status</label>
+        <div class="input-field col s6">
+            <label for="source_airport">Enter your departure airport: </label>
+            <input type="text" name="depart_airport" id="depart_airport" required>
+        </div>
+        <div class="input-field col s6">
+            <label for="dest_airport">Enter your arrival airport: </label>
+            <input type="text" name="arrive_airport" id="arrive_airport" required>
+        </div>
+        <div class="input-field col s6">
+            <label for="date">Enter beginning search date</label>
+            <input type="text" id="date" name="begin" class="datepicker">
+        </div>
+        <div class="input-field col s6">
+            <label for="date2">Enter ending search date</label>
+            <input type="text" id="date2" name="end" class="datepicker">
         </div>
         <button class="btn waves-effect waves-light" type="submit">Submit
             <i class="material-icons right">send</i>
@@ -47,7 +57,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        var elems = document.querySelectorAll('select');
-        var instances = M.FormSelect.init(elems, {});
+        var elems = document.querySelectorAll('.datepicker');
+        var instances = M.Datepicker.init(elems, {format: "yyyy-mm-dd"});
     });
 </script>

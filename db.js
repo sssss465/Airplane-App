@@ -24,4 +24,13 @@ const connection = mysql.createPool({
   database: 'airplaneapp'
 });
 
+// connection.on('connection', function (connection) {
+//   connection.on('enqueue', function (sequence) {
+//     // if (sequence instanceof mysql.Sequence.Query) {
+//     if ('Query' === sequence.constructor.name) {
+//       console.log(sequence.sql);
+//     }
+//   });
+// });
+
 module.exports = connection;
