@@ -7,22 +7,81 @@ router.get('/', (req, res, next) => {
   res.render('splash', {
     user: req.user,
     action: {
-      "createflight": "Create new flights",
+      "flights" : "Show upcoming flights owned by airline", // not sure if right
+      "createflight": "Create new flights", //todo
+      "changestatus": "Change flight status", //todo
       "createplane": "Create new planes",
       'createairport': "Create new airports",
       'viewbookingagents': "View booking agents",
       'viewcustomers': "View customers",
       'reports': "Total amount of tickets sold given range of dates",
       'revenue': "Revenue from direct vs indirect sales",
-      'topdestinations': "3 most popular destinations for last 3 monts and last yr",
+      'topdestinations': "3 most popular destinations for last 3 monts and last yr" //todo
     }
   });
+});
+router.get('/flights', (req, res, next) => {
+  // view my flights
+  req.body.begin = req.body.begin === '' ? '1970-01-01' : req.body.begin;
+  req.body.end = req.body.end === '' ? '2030-01-01' : req.body.end;
+  connection.query(
+    "select *\n" +
+    "from flight\n" +
+    "       natural join (select c.name, flight_num\n" +
+    "                     from customer c\n" +
+    "                            join purchases p on c.email = p.customer_email\n" +
+    "                            join ticket t on p.ticket_id = t.ticket_id) customer_flight\n" +
+    "where arrival_time <= curdate() + interval 1 month\n" +
+    "  and departure_time >= curdate()\n" +
+    "  and airline_name = ?",
+    [req.user.airline_name],
+    (error, results, fields) => {
+      res.render('operated-flights', {
+        user: req.user,
+        title: 'Flights operated by ' + req.user.airline_name,
+        results: results
+      });
+    }
+  );
+});
+
+router.post('/flights', (req, res, next) => {
+  // view my flights
+  req.body.begin = req.body.begin === '' ? '1970-01-01' : req.body.begin;
+  req.body.end = req.body.end === '' ? '2030-01-01' : req.body.end;
+  connection.query(
+    "select *\n" +
+    "from flight\n" +
+    "       natural join (select c.name, flight_num\n" +
+    "                     from customer c\n" +
+    "                            join purchases p on c.email = p.customer_email\n" +
+    "                            join ticket t on p.ticket_id = t.ticket_id) customer_flight\n" +
+    "where arrival_time <= ?\n" +
+    "  and departure_time >= ?\n" +
+    "  and arrival_airport = ?\n" +
+    "  and departure_airport = ?\n" +
+    "  and airline_name = ?",
+    [req.body.end, req.body.begin, req.body.arrive_airport, req.body.depart_airport, req.user.airline_name],
+    (error, results, fields) => {
+      res.render('operated-flights', {
+        user: req.user,
+        title: 'Flights operated by ' + req.user.airline_name,
+        results: results
+      });
+    }
+  );
 });
 
 router.get('/createflight', (req, res, next) => {
 
 });
 router.post('/createflight', (req, res, next) => {
+
+});
+router.get('/changestatus', (req, res, next) => {
+
+});
+router.post('/changestatus', (req, res, next) => {
 
 });
 router.get('/createplane', (req, res, next) => {

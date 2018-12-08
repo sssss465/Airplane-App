@@ -70,7 +70,7 @@ router.get('/flights', (req, res, next) => {
     "where status = 'upcoming'",
     [req.user.email],
     (error, results, fields) => {
-      res.render('view-flights', {user: req.user, status: 'upcoming', results: results});
+      res.render('view-flights', {user: req.user, title: 'Your upcoming flights are below', results: results});
     }
   );
 });
@@ -87,7 +87,11 @@ router.post('/flights', (req, res, next) => {
     "where status = ?",
     [req.user.email, req.body.flight_status],
     (error, results, fields) => {
-      res.render('view-flights', {user: req.user, status: req.body.flight_status, results: results});
+      res.render('view-flights', {
+        user: req.user,
+        title: 'Your ' + req.body.flight_status + ' flights are below',
+        results: results
+      });
     }
   );
 });

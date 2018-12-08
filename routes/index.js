@@ -61,12 +61,12 @@ router.post('/register', (req, res, next) => {
     if (!user) {
       return res.render('register', {message: info.signupMessage});
     }
-    console.log("WELCOME TO THE SITE !");
     req.login(user, (err) => {
       if (err) {
         throw err;
       }
-      res.redirect('/');
+      res.redirect(req.session.returnTo || '/');
+      delete req.session.returnTo;
     });
 
   })(req, res, next);
@@ -83,7 +83,6 @@ router.post('/login', (req, res, next) => {
     if (!user) {
       return res.render('login', {message: info.loginMessage});
     }
-    console.log("WELCOME TO THE SITE ! (login)");
     req.login(user, (err) => {
       if (err) {
         throw err;
