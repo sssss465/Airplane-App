@@ -1,0 +1,40 @@
+<div class ="row">
+    <form action="/airline_staff/createplane" method="post" class="col s12 center-align">
+        <div class="input-field col s4">
+            <label for="date">Your airline name</label>
+            <input type="text" id="date" name="airline_name" value = "{{user.airline_name}}" readonly>
+        </div>
+        <div class="input-field col s4">
+            <label for="date2">Enter the airplane id (unique)</label>
+            <input type="text" id="date2" name="airplane_id">
+        </div>
+        <div class="input-field col s4">
+            <label for="date3">Enter the number of seats</label>
+            <input type="text" id="date3" pattern= "[0-9]+" name="seats">
+        </div>
+        <button class="btn waves-effect waves-light" type="submit">Submit
+            <i class="material-icons right">send</i>
+        </button>
+    </form>
+
+    {{#if results}}
+         <table class="highlight col s12">
+            <thead>
+            <tr>
+                <th>Airline Name</th>
+                <th>Airplane ID</th>
+                <th>Seats</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#each results}}
+                <tr>
+                    <td>{{this.airline_name}}</td>
+                    <td name="airplane_id">{{this.airplane_id}}</td>
+                    <td>{{this.seats}}</td>
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    {{/if}}
+</div>
