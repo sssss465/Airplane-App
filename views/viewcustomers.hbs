@@ -1,0 +1,53 @@
+<div class="row"> 
+    {{#if cust}}
+    <p> The most frequent customer for the past year was {{cust}}</p>
+    {{/if}}
+    {{#if err}}  <div class="card-panel pink lighten-3">No results with that query were found</div> {{/if}}
+    <p> Search below for which flights a customer has taken</p>
+    <form action="/airline_staff/viewcustomers" method="post" class="col s12 center-align">
+        <div class="input-field col s6">
+            <label for="date">Your airline name</label>
+            <input type="text" id="date" name="airline_name" value = "{{user.airline_name}}" readonly>
+        </div>
+        <div class="input-field col s6">
+            <label for="date3">Enter the customer's email</label>
+            <input type="text" id="date3" name="email">
+        </div>
+        <button class="btn waves-effect waves-light" type="submit">Submit
+            <i class="material-icons right">send</i>
+        </button>
+    </form>
+
+    {{#if results}}
+           <table class="highlight col s12">
+            <thead>
+            <tr>
+                <th>Airline Name</th>
+                <th>Flight Number</th>
+                <th>Departure Airport</th>
+                <th>Departure Time</th>
+                <th>Arrival Airport</th>
+                <th>Arrival Time</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th>Airplane ID</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#each results}}
+                <tr>
+                    <td>{{this.airline_name}}</td>
+                    <td>{{this.flight_num}}</td>
+                    <td>{{this.departure_airport}}</td>
+                    <td>{{this.departure_time}}</td>
+                    <td>{{this.arrival_airport}}</td>
+                    <td>{{this.arrival_time}}</td>
+                    <td>{{this.price}}</td>
+                    <td class="{{this.status}}">{{this.status}}</td>
+                    <td name="airplane_id">{{this.airplane_id}}</td>
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    {{/if}}
+</div>

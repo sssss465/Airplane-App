@@ -17,7 +17,7 @@ router.get('/commission', (req, res, next) => {
   "  purchase_date >= curdate() - interval 30 day\n" +
   "group by date_format(purchase_date, '%Y-%m-%d'), month(purchase_date)\n" +
   "order by `date`", [req.user.email], (err, results, fields ) => {
-    if (err) throw err;
+    if (err) {throw err;}
     console.log(results);
     let totalamt = 0; 
     let average = 0; 
@@ -38,7 +38,7 @@ router.post('/commission', (req, res, next) => {
   "  purchase_date >= ?\n" +
   "group by date_format(purchase_date, '%Y-%m-%d'), month(purchase_date)\n" +
   "order by `date`", [req.user.email, req.body.end, req.body.begin], (err, results, fields ) => {
-    if (err) throw err;
+    if (err) {throw err;}
     console.log(results);
     let totalamt = 0; 
     let average = 0; 
@@ -60,7 +60,7 @@ router.get('/topcustomers', (req, res, next) => {
   "  purchase_date >= curdate() - interval 6 month\n" +
   "group by customer_email\n" +
   "order by sum(price) desc limit 5", [req.user.email], (err, results, fields) => {
-    if (err) throw err;
+    if (err) {throw err;}
     const sortedbytotal = results;
 
     connection.query("select customer_email, sum(price) total, count(price) value\n" +
@@ -70,7 +70,7 @@ router.get('/topcustomers', (req, res, next) => {
     "  purchase_date >= curdate() - interval 6 month\n" +
     "group by customer_email\n" +
     "order by count(price) desc limit 5", [req.user.email], (err, results, fields) => {
-      if (err) throw err;
+      if (err) {throw err;}
       console.log(sortedbytotal);
       console.log(results);
       res.render('topfivecustomer', {user: req.user, sortedbytotal: JSON.stringify(sortedbytotal), sortedbycount: JSON.stringify(results)});
@@ -157,7 +157,7 @@ router.post('/flights', (req, res, next) => {
     "where status = ?",
     [req.user.email, req.body.flight_status],
     (error, results, fields) => {
-      if (error) throw error;
+      if (error) {throw error;}
       console.log(results);
       res.render('view-flights', {user: req.user, status: req.body.flight_status, results: results});
     }

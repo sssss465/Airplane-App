@@ -1,0 +1,18 @@
+<div class ="row">
+    {{#if err}}  <div class="card-panel pink lighten-3">Airport already exists</div>
+    {{else if succ}} <div class="card-panel green lighten-3">Airport added!</div>
+    {{/if}}
+    <form action="/airline_staff/createairport" method="post" class="col s12 center-align">
+        <div class="input-field col s6">
+            <label for="date2">Airport name</label>
+            <input type="text" id="date2" name="airport_name">
+        </div>
+        <div class="input-field col s6">
+            <label for="date3">Airport city</label>
+            <input type="text" id="date3" name="airport_city">
+        </div>
+        <button class="btn waves-effect waves-light" type="submit">Submit
+            <i class="material-icons right">send</i>
+        </button>
+    </form>
+</div>
