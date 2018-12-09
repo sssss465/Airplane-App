@@ -25,7 +25,7 @@ md5.js - Computes a md5 digest for login passwords
 
 routes
 ├── agent.js - All routes for agents respective use cases
-├── customer.js
+├── customer.js - All routes for the customer
 ├── index.js - Non logged users can search here. Also the booking agent and customer can both book and search for flights respectively.
 ├── staff.js - All routes for airline staff
 └── users.js - A file a file to test authentication ( not used in the final app)
