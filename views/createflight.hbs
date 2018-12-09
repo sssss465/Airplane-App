@@ -1,52 +1,53 @@
-<div class ="row">
-    {{#if err}}  <div class="card-panel pink lighten-3">Error adding new flight</div>
+<div class="row">
+    {{#if err}} <div class="card-panel pink lighten-3">Error adding new flight</div>
     {{else if succ}} <div class="card-panel green lighten-3">flight added!</div>
     {{/if}}
     <p> create new flights!</p>
     <form action="/airline_staff/createflight" method="post" class="col s12 center-align">
-         <div class="input-field col s6">
+        <div class="input-field col s6">
             <label for="Airline">Airline name</label>
-            <input type="text" id="Airline" name="airport_name" value = "{{user.airline_name}}" class="validate" readonly>
+            <input type="text" id="Airline" name="airport_name" value="{{user.airline_name}}" class="validate" readonly>
         </div>
         <div class="input-field col s6">
             <label for="Flight">Flight number</label>
-            <input type="text" id="Flight" name="flight_num" class="validate" >
+            <input type="text" id="Flight" name="flight_num" class="validate">
         </div>
         <div class="input-field col s6">
             <label for="departure_airport">Departure airport</label>
-            <input type="text" id="departure_airport" name="departure_airport" class="validate" >
+            <input type="text" id="departure_airport" name="departure_airport" class="validate">
         </div>
-         <div class="input-field col s6">
+        <div class="input-field col s6">
             <label for="departure_time">Departure time</label>
-            <input type="text" id="departure_time" name="departure_time" class="datepicker" class="validate" >
+            <input type="text" id="departure_time" name="departure_time" class="datepicker" class="validate">
         </div>
-         <div class="input-field col s6">
+        <div class="input-field col s6">
             <label for="arrival_airport">Arrival airport</label>
-            <input type="text" id="arrival_airport" name="arrival_airport" class="validate" >
+            <input type="text" id="arrival_airport" name="arrival_airport" class="validate">
         </div>
-         <div class="input-field col s6">
+        <div class="input-field col s6">
             <label for="arrival_time">Departure time</label>
-            <input type="text" id="arrival_time" name="arrival_time" class="datepicker" class="validate" >
+            <input type="text" id="arrival_time" name="arrival_time" class="datepicker" class="validate">
         </div>
         <div class="input-field col s4">
             <label for="price">Price</label>
-            <input type="text" pattern="[0-9]+" id="price" name="price" class="validate" >
+            <input type="text" pattern="[0-9]+" id="price" name="price" class="validate">
         </div>
-          <div class="input-field col s4">
+        <div class="input-field col s4">
             <label for="status">Status</label>
-            <input type="text" id="status" name="status" class="validate" >
+            <input type="text" id="status" name="status" class="validate">
         </div>
-          <div class="input-field col s4">
+        <div class="input-field col s4">
             <label for="airplane_id">Airplane id</label>
-            <input type="text" id="airplane_id" name="airplane_id" class="validate" >
+            <input type="text" id="airplane_id" name="airplane_id" class="validate">
         </div>
         <button class="btn waves-effect waves-light" type="submit">Submit
             <i class="material-icons right">send</i>
         </button>
     </form>
-
-     <table class="highlight col s12">
-            <thead>
+    <p> Change flight statuses below</p>
+    <form action="/{{user.type}}/changestatus" method="post" class="">
+    <table class="highlight col s12">
+        <thead>
             <tr>
                 <th>Airline Name</th>
                 <th>Flight Number</th>
@@ -57,29 +58,37 @@
                 <th>Price</th>
                 <th>Status</th>
                 <th>Airplane ID</th>
+                <th> Update status</th>
             </tr>
-            </thead>
-            <tbody>
+        </thead>
+        <tbody>
             {{#each res}}
-                <tr>
-                    <td>{{this.airline_name}}</td>
-                    <td>{{this.flight_num}}</td>
-                    <td>{{this.departure_airport}}</td>
-                    <td>{{this.departure_time}}</td>
-                    <td>{{this.arrival_airport}}</td>
-                    <td>{{this.arrival_time}}</td>
-                    <td>{{this.price}}</td>
-                    <td class="{{this.status}}">{{this.status}}</td>
-                    <td name="airplane_id">{{this.airplane_id}}</td>
-                </tr>
+            <tr>
+                <td>{{this.airline_name}}</td>
+                <td>{{this.flight_num}}</td>
+                <td>{{this.departure_airport}}</td>
+                <td>{{this.departure_time}}</td>
+                <td>{{this.arrival_airport}}</td>
+                <td>{{this.arrival_time}}</td>
+                <td>{{this.price}}</td>
+                <td class="{{this.status}}">{{this.status}}
+                </td>
+                <td name="airplane_id">{{this.airplane_id}}</td>
+                <td>
+                    <button value="{{this.flight_num}} {{this.status}} " name="flight_num" class="btn waves-effect waves-light" type="submit">Update
+                        <i class="material-icons right">send</i>
+                    </button>
+                </td>
+            </tr>
             {{/each}}
-            </tbody>
-        </table>
+        </tbody>
+    </table>
+    </form>
 </div>
 
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                var elems = document.querySelectorAll('.datepicker');
-                var instances = M.Datepicker.init(elems, {format: "yyyy-mm-dd"});
-            });
-        </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var elems = document.querySelectorAll('.datepicker');
+        var instances = M.Datepicker.init(elems, { format: "yyyy-mm-dd" });
+    });
+</script>
