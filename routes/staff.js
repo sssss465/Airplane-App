@@ -8,8 +8,7 @@ router.get('/', (req, res, next) => {
     user: req.user,
     action: {
       "flights" : "Show upcoming flights owned by airline", // not sure if right
-      "createflight": "Create new flights", //todo
-      "changestatus": "Change flight status", //todo
+      "createflight": "Create new flights AND change flight status", //todo
       "createplane": "Create new planes",
       'createairport': "Create new airports",
       'viewbookingagents': "View booking agents",
@@ -71,18 +70,33 @@ router.post('/flights', (req, res, next) => {
     }
   );
 });
-
 router.get('/createflight', (req, res, next) => {
-
+  // 5. Create new flights: He or she creates a new flight, providing all the needed data, via forms. The application should prevent unauthorized users from doing this action. Defaults will be showing all the upcoming flights operated by the airline he/she works for the next 30 days.
+  connection.query('select * from flight where airline_name=?', [req.user.airline_name], (err, results, fields) => {
+    if (err) throw err;
+    res.render('createflight', {user: req.user, res : results});
+  });
 });
 router.post('/createflight', (req, res, next) => {
-
-});
-router.get('/changestatus', (req, res, next) => {
-
+  console.log(req.body);
+  const { airport_name, flight_num, departure_airport,
+  departure_time, arrival_airport, arrival_time, price, status, airplane_id,} = req.body;
+  connection.query('insert into flight values (?,?,?,?,?,?,?,?,?)', [airport_name,flight_num, departure_airport, departure_time, arrival_airport, arrival_time, price, status, airplane_id], (err, results, fields) => {
+    if (err) res.render('createflight', {user : req.user, err : true});
+    else res.redirect('createflight');
+  });
 });
 router.post('/changestatus', (req, res, next) => {
-
+  console.log(req.body);
+  const {flight_num} = req.body;
+  let [num, status] = flight_num.split(' ');
+  if (status === 'upcoming') status = 'in-progress';
+  else if (status === 'in-progress') status = 'delayed';
+  else status = 'upcoming';
+  connection.query('update flight set status=? where flight_num =?', [status, num], (err, results, fields) => {
+    if (err) res.render('createflight', {user : req.user, err : true});
+    else res.redirect('createflight');
+  });
 });
 router.get('/createplane', (req, res, next) => {
   connection.query('select * from airplane where airline_name=?', [req.user.airline_name], (err, results, fields) => {
