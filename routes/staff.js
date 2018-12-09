@@ -278,7 +278,14 @@ router.get('/revenue', (req, res, next) => {
     });
 });
 router.get('/topdestinations', (req, res, next) => {
-
+  connection.query('select arrival_airport, count(ticket_id) from (purchases natural join ticket) natural join flight where purchase_date <= curdate() and purchase_date >= curdate() - interval 3 month group by arrival_airport order by count(ticket_id) desc limit 3', (err, results, fields) => {
+    if (err) throw err;
+    const topthree = results;
+    connection.query('select arrival_airport, count(ticket_id) from (purchases natural join ticket) natural join flight where purchase_date <= curdate() and purchase_date >= curdate() - interval 12 month group by arrival_airport order by count(ticket_id) desc limit 3', (err, results, fields) => {
+      if (err) throw err;
+      res.render('topdestinations', {user: req.user, topthree: topthree, topyear : results});
+    });
+  });
 });
 
 module.exports = router;
