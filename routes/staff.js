@@ -73,13 +73,23 @@ router.post('/flights', (req, res, next) => {
 });
 
 router.get('/createflight', (req, res, next) => {
-
+  // 5. Create new flights: He or she creates a new flight, providing all the needed data, via forms. The application should prevent unauthorized users from doing this action. Defaults will be showing all the upcoming flights operated by the airline he/she works for the next 30 days.
+  connection.query('select * from flight where airline_name=?', [req.user.airline_name], (err, results, fields) => {
+    if (err) throw err;
+    res.render('createflight', {user: req.user, res : results});
+  });
 });
 router.post('/createflight', (req, res, next) => {
-
+  console.log(req.body);
+  const { airport_name, flight_num, departure_airport,
+  departure_time, arrival_airport, arrival_time, price, status, airplane_id,} = req.body;
+  connection.query('insert into flight values (?,?,?,?,?,?,?,?,?)', [airport_name,flight_num, departure_airport, departure_time, arrival_airport, arrival_time, price, status, airplane_id], (err, results, fields) => {
+    if (err) res.render('createflight', {user : req.user, err : true});
+    else res.redirect('createflight');
+  });
 });
 router.get('/changestatus', (req, res, next) => {
-
+  // 6. Change Status of flights: He or she changes a flight status (from upcoming to in progress, in progress to delayed etc) via forms.
 });
 router.post('/changestatus', (req, res, next) => {
 
