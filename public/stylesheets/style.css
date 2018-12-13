@@ -1,30 +1,49 @@
 body {
-  background: #EEF2FF top center repeat-x;
-  /* text-align: center; */
-  margin: auto;
-  font-family: 'Roboto', sans-serif;
-  font-size: 18px;
+    background: #EEF2FF top center repeat-x;
+    /* text-align: center; */
+    margin: auto;
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px;
 }
+
 p {
-  text-align: center;
+    text-align: center;
 }
+
 .form-control {
-  width: 50%;
-  display: inline-block;
+    width: 50%;
+    display: inline-block;
 }
-.form-control-file{
-  width: 50%;
-  display: inline-block;
+
+.form-control-file {
+    width: 50%;
+    display: inline-block;
 }
+
 a {
-  color: #00B7FF;
+    color: #00B7FF;
 }
+
 .delayed {
-color: #f44336;
+    color: #f44336;
 }
+
 .upcoming {
- color: #9ccc65;
+    color: #9ccc65;
 }
+
 .in-progress {
-  color: #ff9800;
+    color: #ff9800;
+}
+
+.Delayed {
+    color: #f44336;
+}
+
+.Upcoming {
+    color: #9ccc65;
+}
+
+.In-Progress {
+    color: #ff9800;
 }
